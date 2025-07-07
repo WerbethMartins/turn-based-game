@@ -1,0 +1,22 @@
+22/06/2025
+
+ - Foi criado classes como: Personagem que terá seus atributos(valores), Arqueiro que herdará todos os
+ atributos de Personagem, mas terá seu atributos únicos, o Guerreiro e o Mago...
+
+ Foi criado a classe menu que será responsavel pelo menu do jogo com: Inicia, Criar personagem e
+ Configurações, foi criado a o menu de dificuldade do jogo dentro da classe Menu, mas a criação do
+ personagem terá uma classe separada, para deixar o código menor e dividido.
+
+ Criado a classe de mensagemSleep para simular um carregamento da página.
+
+ 01/07/2025
+
+ - Foi criado na classe personagem o método pora calcular o dano, foi criado o método atacar, apenas na classe
+ arqueiro e inimigo, foi criado um exemplo de batalha na classe batalha.
+
+ Método usados:
+    - POO (Herança, Polimorfismo, Encapisulamento e Agregação);
+
+ Mudanças:
+
+01/07/25
