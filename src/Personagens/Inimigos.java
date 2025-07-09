@@ -1,14 +1,18 @@
 package Personagens;
 
 import Habilidade.Habilidade;
+import Menu.mensagemSleep;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Inimigos extends Personagem{
     private TipoPersonagem tipo;
     private int recompensaXP;
     private boolean isChefe = false;
     private int habilidadeEspecial;
+
+    mensagemSleep mensagem = new mensagemSleep();
 
     public Inimigos(){
 
@@ -96,7 +100,17 @@ public class Inimigos extends Personagem{
     }
 
     @Override
-    public void fugir() {
+    public boolean fugir(Personagem alvo) {
+        boolean escolheuFugir = Math.random() < 0.5;
 
+        if(getPontosVida() < 25 && getForca() < alvo.getDefesa()){
+            escolheuFugir = true;
+            System.out.println(getNome() + ", decidiu fugir da batalha.");
+            System.out.println(alvo.getNome() + " recebeu: " + getRecompensaXP());
+            mensagem.mensagemSleep("Saindo da batalha...");
+        }else {
+            escolheuFugir = false;
+        }
+        return false;
     }
 }

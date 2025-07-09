@@ -1,14 +1,15 @@
+
 import Habilidade.Habilidade;
-import Personagens.Arqueiro;
-import Personagens.Inimigos;
-import Personagens.TipoHabilidade;
-import Personagens.TipoPersonagem;
+import Menu.mensagemSleep;
+import Personagens.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Batalha {
     private int turno;
+
+    mensagemSleep mensagem = new mensagemSleep();
 
     public void batalha(){}
 
@@ -35,7 +36,7 @@ public class Batalha {
         habilidadesGoblin.add(new Habilidade("Estocada Precisa", TipoHabilidade.FISICO, 9));
         Inimigos goblin = new Inimigos(
                 "Gorlag",           // nome
-                60,                     // pontosVida
+                100,                     // pontosVida
                 10,                      // forca
                 10,                      // defesa
                 15,                      // velocidade
@@ -46,18 +47,20 @@ public class Batalha {
                 20                       // habilidadeEspecial (chance em %)
         );
 
-        System.out.println("\uD83C\uDFF9 Batalha entre " + arqueiro.getNome() + " e " + goblin.getNome() + " começa!");
+        System.out.println("\uD83C\uDFF9 Batalha entre " + arqueiro.getNome() + " e "
+                + goblin.getNome() + " começa!");
         this.turno = 1;
 
         while(arqueiro.estaVivo() && goblin.estaVivo()){
             // Turno do jogador
             System.out.println("\n Seu turno! Faça sua escolha.");
-            System.out.println("(1) - Atacar" + "\n(2) - Defender");
+            System.out.println("(1) - Atacar" + "\n(2) - Defender" + "\n(3) - Fugir");
             System.out.println();
             int op = scanner.nextInt();
 
             switch (op){
                 case 1:
+                    mensagem.mensagemSleep("Seguindo para a escolha de habilidade...");
                     System.out.println("Escolha sua habilidade: ");
 
                     for (int i = 0; i < arqueiro.getHabilidades().size(); i++) {
@@ -65,41 +68,54 @@ public class Batalha {
                         System.out.println((i+1) + " - " + h.getNome() + "(dano base: " + h.getDanoBase() + ")");
                     }
 
-                        System.out.println("Digite o número da habilidade: ");
-                        int escolha = scanner.nextInt();
+                    System.out.print("Digite o número da habilidade: ");
+                    int escolha = scanner.nextInt();
 
-                        int indice = escolha - 1;
-                        if(indice >= 0 && indice < arqueiro.getHabilidades().size()){
-                            Habilidade habilidadeEscolhida = arqueiro.getHabilidades().get(indice);
-                            arqueiro.atacar(goblin, habilidadeEscolhida);
+                    int indice = escolha - 1;
+                    if(indice >= 0 && indice < arqueiro.getHabilidades().size()){
+                        Habilidade habilidadeEscolhida = arqueiro.getHabilidades().get(indice);
+                        arqueiro.atacar(goblin, habilidadeEscolhida);
 
-                        } else {
-                            System.out.println("Escolha inválida!");
-                            break;
-                        }
+                    } else {
+                        System.out.println("Escolha inválida!");
+                        break;
+                    }
 
-                        if (!goblin.estaVivo()) {
-                            System.out.println("\n🏹 " + goblin.getNome() + " foi derrotado! Vitória do jogador!");
-                            break;
-                        }
+                    if (!goblin.estaVivo()) {
+                        System.out.println("\n🏹 " + goblin.getNome() + " foi derrotado! você ganhou " +
+                                goblin.getRecompensaXP() + " de xp.");
+                        break;
+                    }
 
-                        // Turno do inimigo
-                        System.out.println("\n \uD83D\uDC80 Turno do inimigo!");
-                        Habilidade habilidadeGoblin = goblin.getHabilidades().get(0);
-                        goblin.atacar(arqueiro, habilidadeGoblin);
+                    // Turno do inimigo
+                    System.out.println("\n \uD83D\uDC80 Turno do inimigo!");
+                    Habilidade habilidadeGoblin = goblin.getHabilidades().get(0);
+                    goblin.atacar(arqueiro, habilidadeGoblin);
 
-                        if(!arqueiro.estaVivo()){
-                            System.out.println("\\n\uD83D\uDC80 " + " arqueiro está morto! Fim de jogo.");
-                            break;
-                        }
+                    if(goblin.fugir(arqueiro)){
+                        System.out.println("\uD83C\uDFCE\uFE0F\uD83D\uDCA8" + " O inimigo fugiu, você ganhou " +
+                                goblin.getRecompensaXP() + " de xp.");
+                    }
 
-                     break;
+                    if(!arqueiro.estaVivo()){
+                        System.out.println("\\n\uD83D\uDC80 " + " arqueiro está morto! Fim de jogo.");
+                        break;
+                    }
+
+                    break;
                 case 2:
                     // Turno do inimigo
                     System.out.println("Você escolheu se defender.");
                     System.out.println("\n \uD83D\uDC80 Turno do inimigo!");
                     Habilidade habilidadeGoblin2 = goblin.getHabilidades().get(0);
                     arqueiro.defender(goblin, habilidadeGoblin2);
+                    break;
+                case 3:
+                    boolean fugiu = arqueiro.fugir(goblin);
+                    if(fugiu){
+                        System.out.println("⚠\uFE0F Batalha encerrada. Você fugiu!");
+                        break;
+                    }
                     break;
             }
 

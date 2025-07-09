@@ -1,8 +1,10 @@
 package Personagens;
 
 import Habilidade.Habilidade;
+import Menu.mensagemSleep;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Guerreiro extends Personagem{
     private int forcaBruta;
@@ -15,6 +17,10 @@ public class Guerreiro extends Personagem{
         this.resistencia = resistencia;
         this.modoBerserker = modoBerserker;
     }
+
+    Scanner scanner = new Scanner(System.in);
+
+    public void Guerreiro(){};
 
     public Guerreiro(int forcaBruta, int resistencia, boolean modoBerserker) {
         this.forcaBruta = forcaBruta;
@@ -68,7 +74,20 @@ public class Guerreiro extends Personagem{
     }
 
     @Override
-    public void fugir() {
+    public boolean fugir(Personagem alvo){
+        mensagemSleep mensagem = new mensagemSleep();
+        System.out.println("Você deseja fugir da batalha?");
+        System.out.println("(1) - Sim " + "\n(2) - Não");
+        int escolhaFugir = scanner.nextInt();
 
+        if(escolhaFugir == 1 ){
+            System.out.println("Você escolheu fugir da batalha, você perdeu honra!");
+            mensagem.mensagemSleep("Fugindo...");
+            return true;
+        }else if(escolhaFugir == 2){
+            System.out.println("Vamos continuar a batalha.");
+            return false;
+        }
+        return false;
     }
 }

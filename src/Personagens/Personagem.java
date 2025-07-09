@@ -3,6 +3,8 @@ package Personagens;
 import Habilidade.Habilidade;
 import java.util.ArrayList;
 
+import static Personagens.TipoHabilidade.*;
+
 public abstract class Personagem {
     private String nome;
     private int pontosVida;
@@ -146,10 +148,6 @@ public abstract class Personagem {
         return Math.max(0, (int) (habilidade.getDanoBase() + getForca() * multiplicador) - alvo.getDefesa());
     }
 
-    protected double calcularDano() {
-        return calcularDano();
-    }
-
     public void receberDano(int dano){
         this.pontosVida -= Math.max(dano, 0);
     }
@@ -162,5 +160,6 @@ public abstract class Personagem {
 
     public abstract void defender(Personagem atacante, Habilidade habilidade);
 
-    public abstract void fugir();
+    public abstract boolean fugir(Personagem alvo);
+
 }

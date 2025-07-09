@@ -4,6 +4,7 @@ import Habilidade.Habilidade;
 import Menu.mensagemSleep;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Arqueiro extends Personagem{
@@ -54,18 +55,24 @@ public class Arqueiro extends Personagem{
 
     @Override
     public void atacar(Personagem alvo, Habilidade habilidade){
+        Random random = new Random();
+
         int danoBase = calcularDano(alvo, habilidade);
         boolean critico = Math.random() * 100 < this.chanceCritica;
+        int variacao = random.nextInt(5);
+        int destrezaBonus = this.getDestreza() / 2;
 
         if(critico){
             danoBase *= 1.5;
             System.out.println("⚔\uFE0F Você acertou um dano crítico!");
         }
 
-        alvo.receberDano(danoBase);
+        int danoFinal = danoBase + destrezaBonus + variacao;
+
+        alvo.receberDano(danoFinal);
 
         System.out.println(this.getNome() + " atacou " + alvo.getNome() + " com " + habilidade.getNome() +
-                ", causando " + danoBase + " de dano!");
+                ", causando " + danoFinal + " de dano!");
 
         System.out.println(alvo.getNome() + " agora tem " + alvo.getPontosVida() + " ponto de vida!");
     }
@@ -76,7 +83,7 @@ public class Arqueiro extends Personagem{
         boolean defesaAbsoluta = Math.random() * 100 < getDefesa();
         int danoFinal = 0;
 
-        System.out.println("\n\uD83D\uDEE1 " + getNome() + " está se defendendo do ataque: " + habilidade.getNome()
+        System.out.println("\uD83D\uDEE1 " + getNome() + " está se defendendo do ataque: " + habilidade.getNome()
                 + "\n\uD83D\uDCA5 Dano total do inimigo: " + danoOriginal);
 
         if(defesaAbsoluta) {
@@ -84,7 +91,8 @@ public class Arqueiro extends Personagem{
             System.out.println("\uD83D\uDEE1\uFE0F Você defendeu todo o dano do inimigo!");
         } else {
             danoFinal = Math.max(danoOriginal - getDefesa(), 0); // Reduz o dano com base na defesa
-            System.out.println("\uD83D\uDEE1\uFE0F " + getNome() + " reduziu o dano em " + getDefesa() + " pontos.");
+            System.out.println("\uD83D\uDEE1\uFE0F " + getNome() + " reduziu o dano em " + getDefesa()
+                    + " pontos.");
         }
 
         super.receberDano(danoFinal);
@@ -95,18 +103,21 @@ public class Arqueiro extends Personagem{
     }
 
     @Override
-    public void fugir(){
+    public boolean fugir(Personagem alvo){
         mensagemSleep mensagem = new mensagemSleep();
         System.out.println("Você deseja fugir da batalha?");
         System.out.println("(1) - Sim " + "\n(2) - Não");
         int escolhaFugir = scanner.nextInt();
 
         if(escolhaFugir == 1 ){
-            System.out.println( getNome() + "Você escolheu fugir, você perdeu honra!");
+            System.out.println("Você escolheu fugir da batalha, você perdeu honra!");
             mensagem.mensagemSleep("Fugindo...");
-        }else if(escolhaFugir == 0){
+            return true;
+        }else if(escolhaFugir == 2){
             System.out.println("Vamos continuar a batalha.");
+            return false;
         }
+        return false;
     }
 
 }
