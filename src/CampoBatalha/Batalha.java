@@ -31,7 +31,7 @@ public class Batalha {
         Habilidade flecha = new Habilidade("Flecha Feroz", TipoHabilidade.DISTANCIA, 20);
         arqueiro.adicionarHabilidade(flecha);
 
-        // Criar o orc
+        // Criando o orc
         ArrayList<Habilidade> habilidadesGoblin = new ArrayList<>();
         habilidadesGoblin.add(new Habilidade("Estocada Precisa", TipoHabilidade.FISICO, 9));
         Inimigos goblin = new Inimigos(
