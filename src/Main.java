@@ -1,7 +1,5 @@
 
-import Menu.Menu;
-import Personagens.Arqueiro;
-import Personagens.Personagem;
+import CampoBatalha.Batalha;
 
 import java.util.Scanner;
 

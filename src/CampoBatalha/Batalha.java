@@ -1,3 +1,4 @@
+package CampoBatalha;
 
 import Habilidade.Habilidade;
 import Menu.mensagemSleep;
@@ -47,7 +48,7 @@ public class Batalha {
                 20                       // habilidadeEspecial (chance em %)
         );
 
-        System.out.println("\uD83C\uDFF9 Batalha entre " + arqueiro.getNome() + " e "
+        System.out.println("\uD83C\uDFF9 CampoBatalha.Batalha entre " + arqueiro.getNome() + " e "
                 + goblin.getNome() + " começa!");
         this.turno = 1;
 
@@ -113,7 +114,7 @@ public class Batalha {
                 case 3:
                     boolean fugiu = arqueiro.fugir(goblin);
                     if(fugiu){
-                        System.out.println("⚠\uFE0F Batalha encerrada. Você fugiu!");
+                        System.out.println("⚠\uFE0F CampoBatalha.Batalha encerrada. Você fugiu!");
                         break;
                     }
                     break;
