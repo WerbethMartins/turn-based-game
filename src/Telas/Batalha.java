@@ -53,11 +53,6 @@ public class Batalha {
         tela.setVisible(true);
     }
 
-    private void createUIComponents() {
-        configurarTituloBatalha();
-        configurarBotaoBatalha();
-    }
-
     private void configurarTituloBatalha(){
         // Inicializando o JTextPane
         textPaneTituloBatalha = new JTextPane();
@@ -68,7 +63,10 @@ public class Batalha {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        textPaneTituloBatalha.setForeground(Color.WHITE);
         textPaneTituloBatalha.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
+        textPaneTituloBatalha.setBackground(Color.RED);
+        textPaneTituloBatalha.setMargin(new Insets(10,10,10,10));
     }
 
     private void configurarBotaoBatalha(){
@@ -96,6 +94,11 @@ public class Batalha {
 
     public void atualizarTitulo(String personagem1, String personagem2){
         textPaneTituloBatalha.setText("Batalha entre " + personagem1 + " e " + personagem2);
+    }
+
+    private void createUIComponents() {
+        configurarTituloBatalha();
+        configurarBotaoBatalha();
     }
 
     public static void main(String[] args){
