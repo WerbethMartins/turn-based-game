@@ -23,6 +23,10 @@ public class Arqueiro extends Personagem{
         this.destreza = 30;
         this.furtividade = 25;
         this.chanceCritica = 20;
+
+        adicionarHabilidade(new Habilidade("Flecha Feroz", TipoHabilidade.DISTANCIA, 22));
+        adicionarHabilidade(new Habilidade("Flecha de fogo Carmezin", TipoHabilidade.DISTANCIA, 25));
+        adicionarHabilidade(new Habilidade("Flecha tripla", TipoHabilidade.DISTANCIA, 28));
     }
 
     public Arqueiro(String nome, int pontosVida, int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {

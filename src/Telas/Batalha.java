@@ -1,31 +1,30 @@
 package Telas;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.util.ArrayList;
 
-import Habilidade.Habilidade;
-import Personagens.Arqueiro;
-import Personagens.Inimigos;
-import Personagens.Personagem;
-import Personagens.TipoHabilidade;
+import CampoBatalha.CampoBatalha;
+import Estilos.Estilos;
+import Personagens.*;
 
 public class Batalha {
     private JTextPane textPaneTituloBatalha;
     private JButton buttonComecarBatalha;
+    private JButton botaoAtacar;
     private JFrame tela;
+    private Personagem personagem;
+    private CampoBatalha campoBatalha;
 
     public Batalha(){
+
+        this.campoBatalha = new CampoBatalha();
 
         // Criando a janela de pricipal
         tela = new JFrame();
         tela.setTitle("Meu jogo de turnos"); // Definindo o título da janela
 
         // Configurações básicas da janela
-        tela.setSize(800, 600); // Define o tamanho da janela (largura, altura)
+        tela.setSize(600, 400); // Define o tamanho da janela (largura, altura)
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Fecha o programa ao clicar X
         tela.setLocationRelativeTo(null);
 
@@ -53,62 +52,23 @@ public class Batalha {
         tela.setVisible(true);
     }
 
-    private void configurarTituloBatalha(){
-        // Inicializando o JTextPane
-        textPaneTituloBatalha = new JTextPane();
-        textPaneTituloBatalha.setEditable(false); // Impede a edição de texto
-        textPaneTituloBatalha.setFont(new Font("Arial", Font.BOLD, 24));
-        textPaneTituloBatalha.setText("Batalha entre...");
-        StyledDocument doc = textPaneTituloBatalha.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        textPaneTituloBatalha.setForeground(Color.WHITE);
-        textPaneTituloBatalha.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
-        textPaneTituloBatalha.setBackground(Color.RED);
-        textPaneTituloBatalha.setMargin(new Insets(10,10,10,10));
-    }
-
-    private void configurarBotaoBatalha(){
-        buttonComecarBatalha = new JButton();
-        buttonComecarBatalha.setFont(new Font("Arial", Font.PLAIN, 24));
-        buttonComecarBatalha.setText("Iniciar a batalha");
-        buttonComecarBatalha.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        buttonComecarBatalha.setForeground(Color.white);
-        buttonComecarBatalha.setBackground(Color.BLACK);
-        buttonComecarBatalha.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        buttonComecarBatalha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                buttonComecarBatalha.setBackground(new Color(255, 255, 255));
-                buttonComecarBatalha.setForeground(Color.BLACK);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                buttonComecarBatalha.setBackground(new Color(0, 0, 0));
-                buttonComecarBatalha.setForeground(Color.white);
-            }
-        });
-
-        buttonComecarBatalha.setOpaque(true);
-        buttonComecarBatalha.setBorderPainted(true);
-    }
-
-    public void atualizarTitulo(String personagem1, String personagem2){
-        textPaneTituloBatalha.setText("Batalha entre " + personagem1 + " e " + personagem2);
-    }
-
     private void createUIComponents() {
-        configurarTituloBatalha();
-        configurarBotaoBatalha();
+        //textPaneTituloBatalha.setText("Batalha entre " + personagem.getNome() + " e " + personagem.getNome());
+
+        textPaneTituloBatalha = new JTextPane();
+        Estilos.estilosTextPane(textPaneTituloBatalha);
+        textPaneTituloBatalha.setText("Batalha entre...");
+
+        buttonComecarBatalha = new JButton();
+        buttonComecarBatalha.setText("Iniciar a batalha");
+        Estilos.estilizarBotao(buttonComecarBatalha);
+        buttonComecarBatalha.addActionListener(e -> {
+            campoBatalha.batalhaTurnos();
+            textPaneTituloBatalha.setText("Batalha iniciada!");
+        });
     }
 
     public static void main(String[] args){
-        // Executando na thread de despacho de eventos do Swing
-        SwingUtilities.invokeLater(() -> {
-            Batalha batalha = new Batalha();
-
-            Arqueiro arqueiro = new Arqueiro();
-            Inimigos goblin = new Inimigos();
-            batalha.atualizarTitulo(arqueiro.getNome(), goblin.getNome());
-        });
+        SwingUtilities.invokeLater(() -> new Batalha());
     }
 }

@@ -1,5 +1,5 @@
 
-import CampoBatalha.Batalha;
+import CampoBatalha.CampoBatalha;
 
 import java.util.Scanner;
 
@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Batalha batalha = new Batalha();
+        CampoBatalha batalha = new CampoBatalha();
 
         batalha.batalhaTurnos();
 

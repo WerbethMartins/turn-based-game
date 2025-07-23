@@ -7,14 +7,14 @@ import Personagens.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Batalha {
+public class CampoBatalha {
     private int turno;
 
     mensagemSleep mensagem = new mensagemSleep();
 
     public void batalha(){}
 
-    public Batalha() {
+    public CampoBatalha() {
         this.turno = turno;
     }
 
