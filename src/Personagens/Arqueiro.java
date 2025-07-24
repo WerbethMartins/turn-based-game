@@ -1,10 +1,10 @@
 package Personagens;
 
+import Combate.ResultadoAtaque;
 import Habilidade.Habilidade;
-import Menu.mensagemSleep;
+import Util.mensagemSleep;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Arqueiro extends Personagem{
@@ -58,27 +58,19 @@ public class Arqueiro extends Personagem{
     }
 
     @Override
-    public void atacar(Personagem alvo, Habilidade habilidade){
-        Random random = new Random();
-
-        int danoBase = calcularDano(alvo, habilidade);
+    public ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade){
+        double multiplicador = 1.0;
+        int danoBase = habilidade.getDanoBase() + this.getDestreza();
         boolean critico = Math.random() * 100 < this.chanceCritica;
-        int variacao = random.nextInt(5);
-        int destrezaBonus = this.getDestreza() / 2;
 
         if(critico){
-            danoBase *= 1.5;
-            System.out.println("⚔\uFE0F Você acertou um dano crítico!");
+            multiplicador = 0.9;
         }
 
-        int danoFinal = danoBase + destrezaBonus + variacao;
-
+        int danoFinal = critico ? danoBase * 2 : danoBase;
         alvo.receberDano(danoFinal);
 
-        System.out.println(this.getNome() + " atacou " + alvo.getNome() + " com " + habilidade.getNome() +
-                ", causando " + danoFinal + " de dano!");
-
-        System.out.println(alvo.getNome() + " agora tem " + alvo.getPontosVida() + " ponto de vida!");
+        return new ResultadoAtaque(danoFinal, critico, alvo.getPontosVida());
     }
 
     @Override

@@ -1,7 +1,8 @@
 package Personagens;
 
+import Combate.ResultadoAtaque;
 import Habilidade.Habilidade;
-import Menu.mensagemSleep;
+import Util.mensagemSleep;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -51,7 +52,7 @@ public class Mago extends Personagem{
     }
 
     @Override
-    public void atacar(Personagem alvo, Habilidade habilidade){
+    public ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade){
         Random random = new Random();
 
         int variacao = random.nextInt(5);
@@ -73,6 +74,7 @@ public class Mago extends Personagem{
 
         System.out.println(getNome() + " atacou " + alvo.getNome() + " e causou " + danoFinal + " de dano!");
         System.out.println(alvo.getNome() + " agora tem " + alvo.getPontosVida() + " de vida.");
+        return null;
     }
 
     @Override

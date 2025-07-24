@@ -1,7 +1,8 @@
 package Personagens;
 
+import Combate.ResultadoAtaque;
 import Habilidade.Habilidade;
-import Menu.mensagemSleep;
+import Util.mensagemSleep;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -52,7 +53,7 @@ public class Guerreiro extends Personagem{
         this.modoBerserker = modoBerserker;
     }
 
-    public void atacar(Personagem alvo, Habilidade habilidade){
+    public ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade){
         int danoBase = calcularDano(alvo, habilidade);
         boolean berserker = this.modoBerserker;
 
@@ -66,6 +67,7 @@ public class Guerreiro extends Personagem{
         System.out.println(getNome() + " atacou " + alvo.getNome() + " causando " + danoBase + " de dano!");
 
         System.out.println(alvo.getNome() + " agora tem " + alvo.getPontosVida() + " ponto de vida!");
+        return null;
     }
 
     @Override

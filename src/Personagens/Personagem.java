@@ -1,9 +1,8 @@
 package Personagens;
 
+import Combate.ResultadoAtaque;
 import Habilidade.Habilidade;
 import java.util.ArrayList;
-
-import static Personagens.TipoHabilidade.*;
 
 public abstract class Personagem {
     private String nome;
@@ -156,7 +155,7 @@ public abstract class Personagem {
         return this.pontosVida > 0;
     }
 
-    public abstract void atacar(Personagem alvo, Habilidade habilidade);
+    public abstract ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade);
 
     public abstract void defender(Personagem atacante, Habilidade habilidade);
 

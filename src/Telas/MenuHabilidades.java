@@ -1,8 +1,8 @@
 package Telas;
 
+import Combate.ResultadoAtaque;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
-import Personagens.Arqueiro;
 import Personagens.Personagem;
 
 import javax.swing.*;
@@ -15,11 +15,13 @@ public class MenuHabilidades extends  JDialog{
     private JButton buttonHabilidade2;
     private JButton buttonHabilidade3;
     private JFrame tela;
-
     private Personagem personagem;
+    private Personagem inimigo;
 
-    public MenuHabilidades(Frame owner, Personagem personagem) {
-        this.personagem = new Arqueiro("Legolas");
+    public MenuHabilidades(Frame owner, Personagem personagem, Personagem inimigo) {
+        super(owner, "Menu de Habilidades", true);
+        this.personagem = personagem;
+        this.inimigo = inimigo;
 
         tela = new JFrame();
         tela.setTitle("Menu de Habilidades");
@@ -55,57 +57,68 @@ public class MenuHabilidades extends  JDialog{
     }
 
     private void createUIComponents() {
+        textPaneTituloHabilidades = new JTextPane();
+        Estilos.estilosTextPane(textPaneTituloHabilidades);
+        textPaneTituloHabilidades.setText("Escolha sua habilidade:");
+
         configuracaoTitulo();
         configuracaoBotoes();
     }
 
     private void configuracaoBotoes() {
-        List<Habilidade> habilidades = this.personagem.getHabilidades();
+        List<Habilidade> habilidades = personagem.getHabilidades();
 
+        // Botão 1
         buttonHabilidade1 = new JButton(habilidades.size() > 0 ? habilidades.get(0).getNome() : "Habilidade 1");
         Estilos.estilizarBotao(buttonHabilidade1);
-        buttonHabilidade1.addActionListener(e -> {
-            if (!habilidades.isEmpty()) {
-                Habilidade habilidade = habilidades.get(0);
-                JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
-                        habilidade.getNome());
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(tela, "Nenhuma habilidade disponível!");
+        buttonHabilidade1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (habilidades.size() > 0) {
+                    Habilidade habilidade = habilidades.get(0);
+                    ResultadoAtaque resultado = personagem.atacar(inimigo, habilidade);
+                    exibirResultadoAtaque(resultado, habilidade);
+                    tela.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
+                }
             }
         });
 
+        // Botão 2
         buttonHabilidade2 = new JButton(habilidades.size() > 1 ? habilidades.get(1).getNome() : "Habilidade 2");
         Estilos.estilizarBotao(buttonHabilidade2);
-        buttonHabilidade2.addActionListener(e -> {
-            if (habilidades.size() > 1) {
-                Habilidade habilidade = habilidades.get(1);
-                JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
-                        habilidade.getNome());
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(tela, "Habilidade indisponível.");
+        buttonHabilidade2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (habilidades.size() > 1) {
+                    personagem.atacar(inimigo, habilidades.get(1));
+                    JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
+                            habilidades.get(1).getNome());
+                    tela.dispose();
+                }
             }
         });
 
+        // Botão 3
         buttonHabilidade3 = new JButton(habilidades.size() > 2 ? habilidades.get(2).getNome() : "Habilidade 3");
         Estilos.estilizarBotao(buttonHabilidade3);
-        buttonHabilidade3.addActionListener(e -> {
-            if (habilidades.size() > 2) {
-                Habilidade habilidade = habilidades.get(2);
-                JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
-                        habilidade.getNome());
-            } else {
-                JOptionPane.showMessageDialog(tela, "Habilidade indisponível.");
+        buttonHabilidade3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (habilidades.size() > 2) {
+                    personagem.atacar(inimigo, habilidades.get(2));
+                    JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
+                            habilidades.get(2).getNome());
+                    tela.dispose();
+                }
             }
         });
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            new MenuHabilidades(frame, new Arqueiro());
-        });
+    private void exibirResultadoAtaque(ResultadoAtaque resultado, Habilidade habilidade) {
+        String mensagem = personagem.getNome() + " usou " + habilidade.getNome() +
+                "\nDano causado: " + resultado.getDanoCausado() +
+                (resultado.isCritico() ? " (Crítico!)" : "") +
+                "\nVida restante do inimigo: " + resultado.getVidaRestante();
+
+        JOptionPane.showMessageDialog(tela, mensagem);
     }
 }

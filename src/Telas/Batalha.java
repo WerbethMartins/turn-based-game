@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import CampoBatalha.CampoBatalha;
 import Estilos.Estilos;
+import Habilidade.Habilidade;
 import Personagens.*;
 
 public class Batalha {
@@ -13,10 +14,10 @@ public class Batalha {
     private JButton botaoAtacar;
     private JFrame tela;
     private Personagem personagem;
+    private Personagem inimigo;
     private CampoBatalha campoBatalha;
 
     public Batalha(){
-
         this.campoBatalha = new CampoBatalha();
 
         // Criando a janela de pricipal
@@ -47,6 +48,7 @@ public class Batalha {
             System.out.println("Componente encontrado: " + comp.getClass().getSimpleName());
         }
         System.out.println("JButton visível: " + buttonComecarBatalha.isVisible());
+        System.out.println("JButton visível: " + botaoAtacar);
 
         // Torna a janela visível
         tela.setVisible(true);
@@ -63,9 +65,35 @@ public class Batalha {
         buttonComecarBatalha.setText("Iniciar a batalha");
         Estilos.estilizarBotao(buttonComecarBatalha);
         buttonComecarBatalha.addActionListener(e -> {
-            campoBatalha.batalhaTurnos();
-            textPaneTituloBatalha.setText("Batalha iniciada!");
+            textPaneTituloBatalha.setText("Faça sua escolha...");
+            botoeAcoes();
         });
+    }
+
+    public void botoeAcoes(){
+        personagem = campoBatalha.getHeroi();
+        inimigo = campoBatalha.getInimigo();
+
+        // Botão atacar
+        botaoAtacar = new JButton("Atacar");
+        Estilos.estilizarBotao(botaoAtacar);
+
+        botaoAtacar.addActionListener(e -> {
+           MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo);
+        });
+
+        JPanel painelBotoeA = new JPanel(new GridBagLayout());
+        GridBagConstraints botoesAcoes = new GridBagConstraints();
+        botoesAcoes.insets = new Insets(10,10,10,10);
+        painelBotoeA.add(botaoAtacar);
+        tela.add(painelBotoeA, BorderLayout.CENTER);
+
+        // Removendo o botão anterior e adicionando novo no painel
+        tela.getContentPane().removeAll(); // Limpa a tela
+        tela.add(textPaneTituloBatalha, BorderLayout.NORTH);
+        tela.add(painelBotoeA, BorderLayout.CENTER);
+        tela.revalidate();
+        tela.repaint();
     }
 
     public static void main(String[] args){

@@ -1,5 +1,7 @@
 package Menu;
 
+import Util.mensagemSleep;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;

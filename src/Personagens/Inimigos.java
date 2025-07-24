@@ -1,10 +1,10 @@
 package Personagens;
 
+import Combate.ResultadoAtaque;
 import Habilidade.Habilidade;
-import Menu.mensagemSleep;
+import Util.mensagemSleep;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Inimigos extends Personagem{
     private TipoPersonagem tipo;
@@ -67,7 +67,7 @@ public class Inimigos extends Personagem{
     }
 
     @Override
-    public void atacar(Personagem alvo, Habilidade habilidade){
+    public ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade){
         int danoBase = calcularDano(alvo, habilidade);
         boolean habEspecial = Math.random() * 100 < getHabilidadeEspecial();
         this.isChefe = Math.random() < 0.5;
@@ -92,6 +92,7 @@ public class Inimigos extends Personagem{
         System.out.println("==== Logs ====");
         System.out.println("Dano base: " + danoBase + "\nDefesa: " + alvo.getDefesa() + "\nMultiplicador final: "
                 + multiplicador + "\nDano final: " + danoFinal);
+        return null;
     }
 
     @Override
