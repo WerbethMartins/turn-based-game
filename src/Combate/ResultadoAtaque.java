@@ -34,4 +34,5 @@ public class ResultadoAtaque {
     public void setVidaRestante(int vidaRestante) {
         this.vidaRestante = vidaRestante;
     }
+
 }

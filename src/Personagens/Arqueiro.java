@@ -1,6 +1,6 @@
 package Personagens;
 
-import Combate.ResultadoAtaque;
+import Combate.*;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
@@ -20,13 +20,13 @@ public class Arqueiro extends Personagem{
         // Define os atributos herdados com valores fixos do Arqueiro
         super(nome, 80, 15, 5, 25, new ArrayList<>());
         // Define os atributos próprios
-        this.destreza = 30;
-        this.furtividade = 25;
+        this.destreza = 14;
+        this.furtividade = 16;
         this.chanceCritica = 20;
 
-        adicionarHabilidade(new Habilidade("Flecha Feroz", TipoHabilidade.DISTANCIA, 22));
-        adicionarHabilidade(new Habilidade("Flecha de fogo Carmezin", TipoHabilidade.DISTANCIA, 25));
-        adicionarHabilidade(new Habilidade("Flecha tripla", TipoHabilidade.DISTANCIA, 28));
+        adicionarHabilidade(new Habilidade("Flecha Feroz", TipoHabilidade.DISTANCIA, 15));
+        adicionarHabilidade(new Habilidade("Flecha de fogo Carmezin", TipoHabilidade.DISTANCIA, 18));
+        adicionarHabilidade(new Habilidade("Flecha tripla", TipoHabilidade.DISTANCIA, 17));
     }
 
     public Arqueiro(String nome, int pontosVida, int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
@@ -64,38 +64,30 @@ public class Arqueiro extends Personagem{
         boolean critico = Math.random() * 100 < this.chanceCritica;
 
         if(critico){
-            multiplicador = 0.9;
+            multiplicador = 1.2;
         }
 
-        int danoFinal = critico ? danoBase * 2 : danoBase;
+        int danoFinal = (int) (critico ? danoBase * multiplicador : danoBase);
         alvo.receberDano(danoFinal);
 
         return new ResultadoAtaque(danoFinal, critico, alvo.getPontosVida());
     }
 
     @Override
-    public void defender(Personagem atacante, Habilidade habilidade){
+    public ResultadoDefesa defender(Personagem atacante,Habilidade habilidade){
         int danoOriginal = atacante.calcularDano(this, habilidade);
         boolean defesaAbsoluta = Math.random() * 100 < getDefesa();
         int danoFinal = 0;
 
-        System.out.println("\uD83D\uDEE1 " + getNome() + " está se defendendo do ataque: " + habilidade.getNome()
-                + "\n\uD83D\uDCA5 Dano total do inimigo: " + danoOriginal);
-
         if(defesaAbsoluta) {
             danoFinal = 0;
-            System.out.println("\uD83D\uDEE1\uFE0F Você defendeu todo o dano do inimigo!");
         } else {
             danoFinal = Math.max(danoOriginal - getDefesa(), 0); // Reduz o dano com base na defesa
-            System.out.println("\uD83D\uDEE1\uFE0F " + getNome() + " reduziu o dano em " + getDefesa()
-                    + " pontos.");
         }
 
         super.receberDano(danoFinal);
 
-        System.out.println(this.getNome() + " recebeu " + danoFinal + " de dano de " + atacante.getNome() + ".");
-        System.out.println("❤\uFE0F Vida restante " + getPontosVida());
-
+        return new ResultadoDefesa(danoFinal, defesaAbsoluta, super.getPontosVida());
     }
 
     @Override

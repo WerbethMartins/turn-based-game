@@ -1,5 +1,7 @@
 package CampoBatalha;
 
+import Combate.ResultadoAtaque;
+import Combate.ResultadoTurnoInimigo;
 import Habilidade.Habilidade;
 import Personagens.*;
 
@@ -48,6 +50,8 @@ public class CampoBatalha {
 
         ArrayList<Habilidade> habilidadesGoblin = new ArrayList<>();
         habilidadesGoblin.add(new Habilidade("Estocada Precisa", TipoHabilidade.FISICO, 13));
+        habilidadesGoblin.add(new Habilidade("Ataque pesado", TipoHabilidade.FISICO, 15));
+        habilidadesGoblin.add(new Habilidade("Triplo ataque na cabeça", TipoHabilidade.FISICO, 18));
         goblin = new Inimigos(
                 "Gorlag",
                 100,
@@ -59,7 +63,13 @@ public class CampoBatalha {
                 20,
                 Math.random() < 0.5,
                 20);
+
+        System.out.println("Habilidades do goblin:");
+        for (Habilidade h : goblin.getHabilidades()) {
+            System.out.println("- " + h.getNome());
+        }
     }
+
 
     public CampoBatalha() {
         this.turno = 1;
@@ -100,9 +110,26 @@ public class CampoBatalha {
         return fugiu ? " ⚠\uFE0F Você fugiu da batalha com sucesso." : "Falha ao fugir da batalha.";
     }
 
-    public void turnoDoInimigo(){
-        Habilidade habilidade = goblin.getHabilidades().get(0);
-        goblin.atacar(arqueiro, habilidade);
+    public ResultadoTurnoInimigo turnoDoInimigo(){
+        if (goblin == null || arqueiro == null) {
+            System.out.println("[ERRO] Goblin ou Arqueiro está null");
+            return new ResultadoTurnoInimigo(null, null);
+        }
+
+        Habilidade habilidade = goblin.escolherHabilidadeAleatoria();
+
+        if (habilidade == null) {
+            System.out.println("[ERRO] Habilidade do goblin veio null");
+            return new ResultadoTurnoInimigo(null, null);
+        }
+
+        ResultadoAtaque resultado = goblin.atacar(arqueiro, habilidade);
+
+        if (resultado == null) {
+            System.out.println("[ERRO] Resultado do ataque veio null");
+        }
+
+        return new ResultadoTurnoInimigo(resultado, habilidade);
     }
 
     public ArrayList<Habilidade> getHabilidadesArqueiro(){

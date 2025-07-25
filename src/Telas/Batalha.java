@@ -2,8 +2,11 @@ package Telas;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import CampoBatalha.CampoBatalha;
+import Combate.ResultadoAtaque;
+import Combate.ResultadoDefesa;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
 import Personagens.*;
@@ -12,6 +15,7 @@ public class Batalha {
     private JTextPane textPaneTituloBatalha;
     private JButton buttonComecarBatalha;
     private JButton botaoAtacar;
+    private JButton botaoDefender;
     private JFrame tela;
     private Personagem personagem;
     private Personagem inimigo;
@@ -73,19 +77,43 @@ public class Batalha {
     public void botoeAcoes(){
         personagem = campoBatalha.getHeroi();
         inimigo = campoBatalha.getInimigo();
+        List<Habilidade> habilidades = inimigo.getHabilidades();
 
         // Botão atacar
         botaoAtacar = new JButton("Atacar");
         Estilos.estilizarBotao(botaoAtacar);
-
         botaoAtacar.addActionListener(e -> {
-           MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo);
+           MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha);
+        });
+
+        botaoDefender = new JButton("Defender");
+        Estilos.estilizarBotao(botaoDefender);
+        botaoDefender.addActionListener(e -> {
+            if(inimigo.getHabilidades().isEmpty()){
+                JOptionPane.showMessageDialog(tela, "O inimigo não possui habilidades para atacar.");
+                return;
+            }
+
+            Habilidade habilidadeInimigo = inimigo.escolherHabilidadeAleatoria();
+            ResultadoDefesa resultado = personagem.defender(inimigo, habilidadeInimigo);
+
+            String mensagem = personagem.getNome() + " se defendeu do ataque " + habilidadeInimigo.getNome() + "\n"
+                    + "\uD83D\uDEE1 Dano recebido: " + resultado.getDanoOriginal() + "\n"
+                    + (resultado.isDefesaAbsoluta() ? "✨ Defesa absoluta " : "Defesa parcial\n")
+                    + "❤\uFE0F Vida restante: " + personagem.getPontosVida() + "\n";
+            JOptionPane.showMessageDialog(tela, mensagem);
         });
 
         JPanel painelBotoeA = new JPanel(new GridBagLayout());
         GridBagConstraints botoesAcoes = new GridBagConstraints();
         botoesAcoes.insets = new Insets(10,10,10,10);
-        painelBotoeA.add(botaoAtacar);
+        botoesAcoes.gridx = 0;
+        botoesAcoes.gridy = 0;
+
+        painelBotoeA.add(botaoAtacar, botoesAcoes);
+        botoesAcoes.gridy++;
+        painelBotoeA.add(botaoDefender, botoesAcoes);
+        botoesAcoes.gridy++;
         tela.add(painelBotoeA, BorderLayout.CENTER);
 
         // Removendo o botão anterior e adicionando novo no painel

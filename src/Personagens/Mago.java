@@ -1,6 +1,7 @@
 package Personagens;
 
 import Combate.ResultadoAtaque;
+import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
@@ -78,7 +79,7 @@ public class Mago extends Personagem{
     }
 
     @Override
-    public void defender(Personagem atacante, Habilidade habilidade) {
+    public ResultadoDefesa defender(Personagem atacante, Habilidade habilidade) {
         int danoOriginal = atacante.calcularDano(this, habilidade);
         boolean escudoMana = Math.random() * 100 < getDefesa();
         int danoFinal = 0;
@@ -100,6 +101,7 @@ public class Mago extends Personagem{
         System.out.println(this.getNome() + " recebeu " + danoFinal + " de dano de " + atacante.getNome() +
                 ".");
         System.out.println("❤\uFE0F Vida restante: " + getPontosVida() + getMensagemVida());
+        return null;
     }
 
     @Override

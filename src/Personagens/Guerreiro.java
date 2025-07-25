@@ -1,6 +1,7 @@
 package Personagens;
 
 import Combate.ResultadoAtaque;
+import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
@@ -71,8 +72,9 @@ public class Guerreiro extends Personagem{
     }
 
     @Override
-    public void defender(Personagem atacante, Habilidade habilidade) {
+    public ResultadoDefesa defender(Personagem atacante, Habilidade habilidade) {
 
+        return null;
     }
 
     @Override

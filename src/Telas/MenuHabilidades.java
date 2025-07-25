@@ -1,6 +1,8 @@
 package Telas;
 
+import CampoBatalha.CampoBatalha;
 import Combate.ResultadoAtaque;
+import Combate.ResultadoTurnoInimigo;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
 import Personagens.Personagem;
@@ -17,11 +19,13 @@ public class MenuHabilidades extends  JDialog{
     private JFrame tela;
     private Personagem personagem;
     private Personagem inimigo;
+    private CampoBatalha campoBatalha;
 
-    public MenuHabilidades(Frame owner, Personagem personagem, Personagem inimigo) {
+    public MenuHabilidades(Frame owner, Personagem personagem, Personagem inimigo, CampoBatalha campoBatalha) {
         super(owner, "Menu de Habilidades", true);
         this.personagem = personagem;
         this.inimigo = inimigo;
+        this.campoBatalha = campoBatalha;
 
         tela = new JFrame();
         tela.setTitle("Menu de Habilidades");
@@ -60,7 +64,6 @@ public class MenuHabilidades extends  JDialog{
         textPaneTituloHabilidades = new JTextPane();
         Estilos.estilosTextPane(textPaneTituloHabilidades);
         textPaneTituloHabilidades.setText("Escolha sua habilidade:");
-
         configuracaoTitulo();
         configuracaoBotoes();
     }
@@ -77,7 +80,21 @@ public class MenuHabilidades extends  JDialog{
                     Habilidade habilidade = habilidades.get(0);
                     ResultadoAtaque resultado = personagem.atacar(inimigo, habilidade);
                     exibirResultadoAtaque(resultado, habilidade);
-                    tela.dispose();
+
+                    if(inimigo.getPontosVida() <= 0){
+                        JOptionPane.showMessageDialog(tela, inimigo.getNome() + " Foi derrotado!");
+                        dispose();
+                        return;
+                    }
+
+                    // turno inimigo
+                    ResultadoTurnoInimigo turnoInimigo  = campoBatalha.turnoDoInimigo();
+                    exibirAtaqueInimigo(turnoInimigo.getResultado(), turnoInimigo.getHabilidadeUsada());
+
+                    if(personagem.getPontosVida() <= 0){
+                        JOptionPane.showMessageDialog(tela, personagem.getNome() + " Foi derrotado!");
+                        tela.dispose();
+                    }
                 } else {
                     JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
                 }
@@ -90,10 +107,12 @@ public class MenuHabilidades extends  JDialog{
         buttonHabilidade2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (habilidades.size() > 1) {
-                    personagem.atacar(inimigo, habilidades.get(1));
-                    JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
-                            habilidades.get(1).getNome());
+                    Habilidade habilidade = habilidades.get(1);
+                    ResultadoAtaque resultado = personagem.atacar(inimigo, habilidade);
+                    exibirResultadoAtaque(resultado, habilidade);
                     tela.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
                 }
             }
         });
@@ -104,19 +123,34 @@ public class MenuHabilidades extends  JDialog{
         buttonHabilidade3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (habilidades.size() > 2) {
-                    personagem.atacar(inimigo, habilidades.get(2));
-                    JOptionPane.showMessageDialog(tela, personagem.getNome() + " usou " +
-                            habilidades.get(2).getNome());
-                    tela.dispose();
+                   Habilidade habilidade = habilidades.get(2);
+                   ResultadoAtaque resultado = personagem.atacar(inimigo, habilidade);
+                   exibirResultadoAtaque(resultado, habilidade);
+                   tela.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
                 }
             }
         });
     }
 
+    private void exibirAtaqueInimigo(ResultadoAtaque resultado, Habilidade habilidadeUsada){
+        if (resultado == null || habilidadeUsada == null) {
+            JOptionPane.showMessageDialog(this, "Erro: o resultado ou a habilidade do inimigo veio nulo!");
+            return;
+        }
+
+        String mensagem = inimigo.getNome() + " usou " + habilidadeUsada.getNome() + "\n"
+                + "Dano causado: " + resultado.getDanoCausado() + "\n"
+                + (resultado.isCritico() ? "Acerto crítico!\n" : "")
+                + "Vida restante de " + personagem.getNome() + ": " + resultado.getVidaRestante();
+        JOptionPane.showMessageDialog(this, mensagem);
+    }
+
     private void exibirResultadoAtaque(ResultadoAtaque resultado, Habilidade habilidade) {
         String mensagem = personagem.getNome() + " usou " + habilidade.getNome() +
                 "\nDano causado: " + resultado.getDanoCausado() +
-                (resultado.isCritico() ? " (Crítico!)" : "") +
+                (resultado.isCritico() ? " (Acerto crítico!)" : "") +
                 "\nVida restante do inimigo: " + resultado.getVidaRestante();
 
         JOptionPane.showMessageDialog(tela, mensagem);

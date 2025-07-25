@@ -1,10 +1,12 @@
 package Personagens;
 
 import Combate.ResultadoAtaque;
+import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Inimigos extends Personagem{
     private TipoPersonagem tipo;
@@ -67,6 +69,17 @@ public class Inimigos extends Personagem{
     }
 
     @Override
+    public Habilidade escolherHabilidadeAleatoria(){
+        List<Habilidade> habilidades = this.getHabilidades();
+        if(habilidades == null || habilidades.isEmpty()){
+            return null;
+        }
+
+        int index = (int)(Math.random() * habilidades.size());
+        return habilidades.get(index);
+    }
+
+    @Override
     public ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade){
         int danoBase = calcularDano(alvo, habilidade);
         boolean habEspecial = Math.random() * 100 < getHabilidadeEspecial();
@@ -92,12 +105,14 @@ public class Inimigos extends Personagem{
         System.out.println("==== Logs ====");
         System.out.println("Dano base: " + danoBase + "\nDefesa: " + alvo.getDefesa() + "\nMultiplicador final: "
                 + multiplicador + "\nDano final: " + danoFinal);
-        return null;
+
+        return new ResultadoAtaque(danoFinal,habEspecial, alvo.getPontosVida());
     }
 
     @Override
-    public void defender(Personagem atacante, Habilidade habilidade) {
+    public ResultadoDefesa defender(Personagem atacante, Habilidade habilidade) {
 
+        return null;
     }
 
     @Override

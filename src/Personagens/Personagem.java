@@ -1,6 +1,7 @@
 package Personagens;
 
 import Combate.ResultadoAtaque;
+import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
 import java.util.ArrayList;
 
@@ -155,9 +156,15 @@ public abstract class Personagem {
         return this.pontosVida > 0;
     }
 
+    // Métodos abstratos
+
+    public Habilidade escolherHabilidadeAleatoria(){
+        return null;
+    }
+
     public abstract ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade);
 
-    public abstract void defender(Personagem atacante, Habilidade habilidade);
+    public abstract ResultadoDefesa defender(Personagem atacante, Habilidade habilidade);
 
     public abstract boolean fugir(Personagem alvo);
 
