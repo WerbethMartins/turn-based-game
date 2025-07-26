@@ -5,6 +5,8 @@ import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,26 +89,26 @@ public class Inimigos extends Personagem{
         double multiplicador = 1.0;
 
         if (habEspecial){
-            multiplicador += 0.1; // Mais 10%
+            multiplicador = 1.1;
             System.out.println("⚡ Habilidade especial ativada!");
         }
 
         if(this.isChefe){
-            multiplicador += 0.2;
+            multiplicador = 1.2;
             System.out.println("👑 O chefe ganha buffs!");
         }
 
         alvo.receberDano(danoBase);
 
-        // Limitando o dano final do inimigo para não mais que 40 de dano
         int danoFinal = Math.min((int) (danoBase * multiplicador), 40);
         System.out.println(getNome() + " atacou " + alvo.getNome() + " causando " + danoBase + " de dano! \n"
         + alvo.getNome() + " agora tem " + alvo.getPontosVida() + " de vida!");
+
         System.out.println("==== Logs ====");
         System.out.println("Dano base: " + danoBase + "\nDefesa: " + alvo.getDefesa() + "\nMultiplicador final: "
                 + multiplicador + "\nDano final: " + danoFinal);
 
-        return new ResultadoAtaque(danoFinal,habEspecial, alvo.getPontosVida());
+        return new ResultadoAtaque(danoFinal,habEspecial,alvo.getPontosVida());
     }
 
     @Override

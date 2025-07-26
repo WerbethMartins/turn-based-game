@@ -62,7 +62,7 @@ public class CampoBatalha {
                 TipoPersonagem.GOBLIN,
                 20,
                 Math.random() < 0.5,
-                20);
+                12);
 
         System.out.println("Habilidades do goblin:");
         for (Habilidade h : goblin.getHabilidades()) {
@@ -98,7 +98,7 @@ public class CampoBatalha {
         return "Você atacou com " + habilidade.getNome();
     }
 
-    public String defender(){
+    public String defender(Personagem inimigo, Habilidade habilidade){
         Habilidade habilidadeGoblin = goblin.getHabilidades().get(0);
         arqueiro.defender(goblin, habilidadeGoblin);
         return "Você se defendeu.";

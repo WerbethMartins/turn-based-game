@@ -6,6 +6,7 @@ import Combate.ResultadoTurnoInimigo;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
 import Personagens.Personagem;
+import Util.MensagemBatalha;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,15 +18,18 @@ public class MenuHabilidades extends  JDialog{
     private JButton buttonHabilidade2;
     private JButton buttonHabilidade3;
     private JFrame tela;
+    private JFrame telaPrincipal;
     private Personagem personagem;
     private Personagem inimigo;
     private CampoBatalha campoBatalha;
 
-    public MenuHabilidades(Frame owner, Personagem personagem, Personagem inimigo, CampoBatalha campoBatalha) {
+    public MenuHabilidades(Frame owner, Personagem personagem, Personagem inimigo, CampoBatalha campoBatalha,
+                           JFrame telaPrincipal) {
         super(owner, "Menu de Habilidades", true);
         this.personagem = personagem;
         this.inimigo = inimigo;
         this.campoBatalha = campoBatalha;
+        this.telaPrincipal = telaPrincipal;
 
         tela = new JFrame();
         tela.setTitle("Menu de Habilidades");
@@ -61,9 +65,6 @@ public class MenuHabilidades extends  JDialog{
     }
 
     private void createUIComponents() {
-        textPaneTituloHabilidades = new JTextPane();
-        Estilos.estilosTextPane(textPaneTituloHabilidades);
-        textPaneTituloHabilidades.setText("Escolha sua habilidade:");
         configuracaoTitulo();
         configuracaoBotoes();
     }
@@ -83,7 +84,8 @@ public class MenuHabilidades extends  JDialog{
 
                     if(inimigo.getPontosVida() <= 0){
                         JOptionPane.showMessageDialog(tela, inimigo.getNome() + " Foi derrotado!");
-                        dispose();
+                        tela.dispose();
+                        telaPrincipal.dispose();
                         return;
                     }
 
@@ -94,10 +96,13 @@ public class MenuHabilidades extends  JDialog{
                     if(personagem.getPontosVida() <= 0){
                         JOptionPane.showMessageDialog(tela, personagem.getNome() + " Foi derrotado!");
                         tela.dispose();
+                        telaPrincipal.dispose();
+                        return;
                     }
                 } else {
                     JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
                 }
+                tela.dispose();
             }
         });
 
@@ -106,14 +111,32 @@ public class MenuHabilidades extends  JDialog{
         Estilos.estilizarBotao(buttonHabilidade2);
         buttonHabilidade2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (habilidades.size() > 1) {
+                if(habilidades.size() > 1) {
                     Habilidade habilidade = habilidades.get(1);
                     ResultadoAtaque resultado = personagem.atacar(inimigo, habilidade);
                     exibirResultadoAtaque(resultado, habilidade);
-                    tela.dispose();
-                } else {
+
+                    if (inimigo.getPontosVida() <= 0) {
+                        MensagemBatalha.mostrarDerrota(tela, inimigo);
+                        tela.dispose();
+                        telaPrincipal.dispose();
+                        return;
+                    }
+
+                    // Turno do inimigo
+                    ResultadoTurnoInimigo turnoInimigo = campoBatalha.turnoDoInimigo();
+                    exibirAtaqueInimigo(turnoInimigo.getResultado(), turnoInimigo.getHabilidadeUsada());
+
+                    if (personagem.getPontosVida() <= 0) {
+                        MensagemBatalha.mostrarDerrota(tela, personagem);
+                        tela.dispose();
+                        telaPrincipal.dispose();
+                        return;
+                    }
+                }else {
                     JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
                 }
+                tela.dispose();
             }
         });
 
@@ -122,14 +145,34 @@ public class MenuHabilidades extends  JDialog{
         Estilos.estilizarBotao(buttonHabilidade3);
         buttonHabilidade3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (habilidades.size() > 2) {
+                if(habilidades.size() > 2){
                    Habilidade habilidade = habilidades.get(2);
                    ResultadoAtaque resultado = personagem.atacar(inimigo, habilidade);
                    exibirResultadoAtaque(resultado, habilidade);
-                   tela.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(tela, "Habilidade não encontrada!");
+
+                   if(inimigo.getPontosVida() <= 0){
+                       campoBatalha.getHeroi().estaVivo();
+                       MensagemBatalha.mostrarDerrota(tela, inimigo);
+                       tela.dispose();
+                       telaPrincipal.dispose();
+                       return;
+                   }
+
+                   // Turno do inimigo
+                   ResultadoTurnoInimigo turnoInimigo = campoBatalha.turnoDoInimigo();
+                   exibirAtaqueInimigo(turnoInimigo.getResultado(), turnoInimigo.getHabilidadeUsada());
+
+                   if(personagem.getPontosVida() <= 0){
+                       campoBatalha.getHeroi().estaVivo();
+                       JOptionPane.showMessageDialog(tela, "Você foi derrotado!");
+                       tela.dispose();
+                       telaPrincipal.dispose();
+                       return;
+                   }
+                }else {
+                    JOptionPane.showMessageDialog(tela, "Nenhuma habilidade encontrada!");
                 }
+                tela.dispose();
             }
         });
     }
@@ -143,6 +186,7 @@ public class MenuHabilidades extends  JDialog{
         String mensagem = inimigo.getNome() + " usou " + habilidadeUsada.getNome() + "\n"
                 + "Dano causado: " + resultado.getDanoCausado() + "\n"
                 + (resultado.isCritico() ? "Acerto crítico!\n" : "")
+
                 + "Vida restante de " + personagem.getNome() + ": " + resultado.getVidaRestante();
         JOptionPane.showMessageDialog(this, mensagem);
     }

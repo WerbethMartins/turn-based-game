@@ -59,11 +59,12 @@ public class Batalha {
     }
 
     private void createUIComponents() {
-        //textPaneTituloBatalha.setText("Batalha entre " + personagem.getNome() + " e " + personagem.getNome());
+        personagem = campoBatalha.getHeroi();
+        inimigo = campoBatalha.getInimigo();
 
         textPaneTituloBatalha = new JTextPane();
         Estilos.estilosTextPane(textPaneTituloBatalha);
-        textPaneTituloBatalha.setText("Batalha entre...");
+        textPaneTituloBatalha.setText("Batalha entre " + personagem.getNome() + " e " + inimigo.getNome());
 
         buttonComecarBatalha = new JButton();
         buttonComecarBatalha.setText("Iniciar a batalha");
@@ -77,13 +78,12 @@ public class Batalha {
     public void botoeAcoes(){
         personagem = campoBatalha.getHeroi();
         inimigo = campoBatalha.getInimigo();
-        List<Habilidade> habilidades = inimigo.getHabilidades();
 
         // Botão atacar
         botaoAtacar = new JButton("Atacar");
         Estilos.estilizarBotao(botaoAtacar);
         botaoAtacar.addActionListener(e -> {
-           MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha);
+           MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha, tela);
         });
 
         botaoDefender = new JButton("Defender");

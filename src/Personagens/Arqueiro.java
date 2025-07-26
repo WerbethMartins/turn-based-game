@@ -87,6 +87,11 @@ public class Arqueiro extends Personagem{
 
         super.receberDano(danoFinal);
 
+        System.out.println("Você se defendeu do ataque de " + atacante.getNome() + "\n"
+                + "Dano: " + danoOriginal + "\n"
+                + "Dano após defender: " + danoFinal + "\n"
+                + "Vida restante: " + getPontosVida());
+
         return new ResultadoDefesa(danoFinal, defesaAbsoluta, super.getPontosVida());
     }
 

@@ -5,7 +5,7 @@ import Personagens.Personagem;
 
 import javax.swing.*;
 
-public class MenssagemBatalha {
+public class MensagemBatalha {
 
     public static void MostrarResultadoAtaque(JFrame tela, Personagem atacante, Personagem defensor, Habilidade habilidade, int dano, boolean critico){
         StringBuilder mensagem = new StringBuilder();

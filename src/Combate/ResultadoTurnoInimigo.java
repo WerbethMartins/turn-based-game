@@ -1,6 +1,7 @@
 package Combate;
 
 import Habilidade.Habilidade;
+import Personagens.Inimigos;
 
 public class ResultadoTurnoInimigo {
     private ResultadoAtaque resultado;
@@ -26,4 +27,5 @@ public class ResultadoTurnoInimigo {
     public void setHabilidadeUsada(Habilidade habilidadeUsada) {
         this.habilidadeUsada = habilidadeUsada;
     }
+
 }
