@@ -85,26 +85,40 @@ public class Batalha {
         botaoAtacar = new JButton("Atacar");
         Estilos.estilizarBotao(botaoAtacar);
         botaoAtacar.addActionListener(e -> {
-           MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha, tela);
+            try{
+                if(campoBatalha.estaAtiva()){
+                    MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha, tela);
+                } else {
+                    JOptionPane.showMessageDialog(tela, "A batalha não está ativa!");
+                }
+            }catch(Exception error){
+                JOptionPane.showMessageDialog(tela, "Não foi possivel atacar!" + error);
+                error.printStackTrace();
+            }
         });
 
         // Botão defender
         botaoDefender = new JButton("Defender");
         Estilos.estilizarBotao(botaoDefender);
         botaoDefender.addActionListener(e -> {
-            if(inimigo.getHabilidades().isEmpty()){
-                JOptionPane.showMessageDialog(tela, "O inimigo não possui habilidades para atacar.");
-                return;
+            try{
+                if(inimigo.getHabilidades().isEmpty()){
+                    JOptionPane.showMessageDialog(tela, "O inimigo não possui habilidades para atacar.");
+                    return;
+                }
+
+                Habilidade habilidadeInimigo = inimigo.escolherHabilidadeAleatoria();
+                ResultadoDefesa resultado = personagem.defender(inimigo, habilidadeInimigo);
+
+                String mensagem = personagem.getNome() + " se defendeu do ataque " + habilidadeInimigo.getNome() + "\n"
+                        + "\uD83D\uDEE1 Dano recebido: " + resultado.getDanoOriginal() + "\n"
+                        + (resultado.isDefesaAbsoluta() ? "✨ Defesa absoluta " : "Defesa parcial\n")
+                        + "❤\uFE0F Vida restante: " + personagem.getPontosVida() + "\n";
+                JOptionPane.showMessageDialog(tela, mensagem);
+            }catch(Exception error){
+                JOptionPane.showMessageDialog(tela, "Não foi possivel defender!");
+                error.printStackTrace();
             }
-
-            Habilidade habilidadeInimigo = inimigo.escolherHabilidadeAleatoria();
-            ResultadoDefesa resultado = personagem.defender(inimigo, habilidadeInimigo);
-
-            String mensagem = personagem.getNome() + " se defendeu do ataque " + habilidadeInimigo.getNome() + "\n"
-                    + "\uD83D\uDEE1 Dano recebido: " + resultado.getDanoOriginal() + "\n"
-                    + (resultado.isDefesaAbsoluta() ? "✨ Defesa absoluta " : "Defesa parcial\n")
-                    + "❤\uFE0F Vida restante: " + personagem.getPontosVida() + "\n";
-            JOptionPane.showMessageDialog(tela, mensagem);
         });
 
         // Botão Fugir

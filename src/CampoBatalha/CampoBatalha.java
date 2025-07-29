@@ -139,6 +139,8 @@ public class CampoBatalha {
     }
 
     public boolean estaAtiva(){
+        System.out.println("Batalha entre " + getHeroi().getNome() + " e " + getInimigo().getNome()
+                + " está ativa.");
         return batalhaAtiva;
     }
 
