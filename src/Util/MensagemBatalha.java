@@ -35,7 +35,7 @@ public class MensagemBatalha {
         if(fugiu){
             mensagem = "\uD83C\uDFC3 " + personagem.getNome() + " consegiu fugir!";
         }else {
-            mensagem = personagem.getNome() + "Não consegiu fugir!";
+            mensagem = personagem.getNome() + "Não conseguiu fugir!";
         }
 
         JOptionPane.showMessageDialog(tela, mensagem, "Fuga", JOptionPane.WARNING_MESSAGE);

@@ -39,4 +39,25 @@ public class Estilos {
             }
         });
     }
+
+    public static void aplicarEfeitoBotaoImagem(JButton botao) {
+        botao.setBorderPainted(false);
+        botao.setContentAreaFilled(false);
+        botao.setFocusPainted(false);
+        botao.setOpaque(false);
+        botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Hover: muda o tamanho ou a borda
+        botao.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botao.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                botao.setBorder(null);
+            }
+        });
+    }
 }

@@ -5,6 +5,7 @@ import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -24,6 +25,10 @@ public class Mago extends Personagem{
         this.mana = 80;
         this.poderMagico = 30;
         this.sabedoria = false;
+
+        adicionarHabilidade(new Habilidade("Bola de Fogo", TipoHabilidade.MAGIA, 13));
+        adicionarHabilidade(new Habilidade("Misseis Mágicos", TipoHabilidade.MAGIA, 15));
+        adicionarHabilidade(new Habilidade("Fogo do Inferno", TipoHabilidade.MAGIA, 18));
     }
 
     public Mago(int mana, int poderMagico, boolean sabedoria) {
@@ -54,28 +59,28 @@ public class Mago extends Personagem{
 
     @Override
     public ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade){
-        Random random = new Random();
+        int custoMana = habilidade.getDanoBase() / 2;
 
-        int variacao = random.nextInt(5);
-        int danoBase = calcularDano(alvo, habilidade);
-        int danoMagico = this.poderMagico / 2;
-        boolean sabedoria = this.sabedoria;
-        int mana = this.mana;
+        if(this.mana < custoMana){
+            System.out.println("❌ Mana insuficiente para lançar habilidade!");
+            return new ResultadoAtaque(0,false, alvo.getPontosVida());
+        }
+        this.mana -= custoMana;
+
+        boolean sabedoriaAtiva = this.sabedoria;
+        double multiplicador = sabedoriaAtiva ? 1.2 : 1.0;
+        int danoBase = habilidade.getDanoBase() + (this.poderMagico / 2) + (custoMana / 3);
 
         if(sabedoria){
-            mana += 30;
-            danoBase *= 1.3;
+            this.mana += 30;
             System.out.println("\uD83E\uDDD9\uD83C\uDFFC\u200D♂\uFE0F Sabedoria ativada! Você ganhou pontos " +
                     "e mana e poder" + mana);
         }
 
-        int danoFinal = danoBase + danoMagico + variacao;
-
+        int danoFinal = (int) (danoBase  * multiplicador);
         alvo.receberDano(danoFinal);
 
-        System.out.println(getNome() + " atacou " + alvo.getNome() + " e causou " + danoFinal + " de dano!");
-        System.out.println(alvo.getNome() + " agora tem " + alvo.getPontosVida() + " de vida.");
-        return null;
+        return new ResultadoAtaque(danoFinal, sabedoria, alvo.getPontosVida());
     }
 
     @Override
@@ -83,9 +88,6 @@ public class Mago extends Personagem{
         int danoOriginal = atacante.calcularDano(this, habilidade);
         boolean escudoMana = Math.random() * 100 < getDefesa();
         int danoFinal = 0;
-
-        System.out.println("\uD83D\uDEE1" + getNome() + " está se defendendo do ataque: " + habilidade.getNome() +
-                "\n\uD83D\uDCA5 dano total do inimigo: " + danoOriginal);
 
         if(escudoMana){
             danoFinal = 0;
@@ -98,27 +100,33 @@ public class Mago extends Personagem{
 
         super.receberDano(danoFinal);
 
-        System.out.println(this.getNome() + " recebeu " + danoFinal + " de dano de " + atacante.getNome() +
-                ".");
-        System.out.println("❤\uFE0F Vida restante: " + getPontosVida() + getMensagemVida());
-        return null;
+        System.out.println("Você se defendeu do ataque de " + atacante.getNome() + "\n"
+                            + "Dano: " + danoOriginal + "\n"
+                            + "Dano após defender: " + danoFinal + "\n"
+                            + "Vida restante: " + getPontosVida());
+
+        return new ResultadoDefesa(danoFinal, escudoMana, super.getPontosVida());
     }
 
     @Override
     public boolean fugir(Personagem alvo){
-        mensagemSleep mensagem = new mensagemSleep();
-        System.out.println("Você deseja fugir da batalha?");
-        System.out.println("(1) - Sim " + "\n(2) - Não");
-        int escolhaFugir = scanner.nextInt();
+        mensagemSleep mensagemSleep = new mensagemSleep();
 
-        if(escolhaFugir == 1 ){
+        int escolhaFugir = JOptionPane.showConfirmDialog(
+                null,
+                "Você deseja fugir da batalha?",
+                "Fuga",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if(escolhaFugir == JOptionPane.YES_NO_OPTION){
+            mensagemSleep.mensagemSleep("Fugindo!");
             System.out.println("Você escolheu fugir da batalha, você perdeu honra!");
-            mensagem.mensagemSleep("Fugindo...");
             return true;
-        }else if(escolhaFugir == 2){
-            System.out.println("Vamos continuar a batalha.");
+        } else {
+            System.out.println("Você decidiu continuar lutando!");
             return false;
         }
-        return false;
     }
 }

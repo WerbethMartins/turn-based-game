@@ -129,16 +129,16 @@ public abstract class Personagem {
 
             case MAGIA:
                 if(alvo instanceof Arqueiro){
-                    multiplicador = 0.9;
+                    multiplicador = 1.0;
                 } else if(alvo instanceof Guerreiro) {
-                    multiplicador = 1.5;
+                    multiplicador = 1.3;
                 } else if(alvo instanceof Mago) {
-                    multiplicador = 0.8;
+                    multiplicador = 0.9;
                 } else if(alvo instanceof Inimigos inimigo){
                     if(inimigo.getTipo() == TipoPersonagem.GOBLIN){
-                        multiplicador = 1.5;
+                        multiplicador = 1.1;
                     } else if(inimigo.getTipo() == TipoPersonagem.ORC){
-                        multiplicador = 1.2;
+                        multiplicador = 1.0;
                     }
                 }
              break;

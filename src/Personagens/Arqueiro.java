@@ -4,6 +4,7 @@ import Combate.*;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -70,16 +71,16 @@ public class Arqueiro extends Personagem{
         int danoFinal = (int) (critico ? danoBase * multiplicador : danoBase);
         alvo.receberDano(danoFinal);
 
-        return new ResultadoAtaque(danoFinal, critico, alvo.getPontosVida());
+        return new ResultadoAtaque(danoFinal, critico,alvo.getPontosVida());
     }
 
     @Override
     public ResultadoDefesa defender(Personagem atacante,Habilidade habilidade){
         int danoOriginal = atacante.calcularDano(this, habilidade);
-        boolean defesaAbsoluta = Math.random() * 100 < getDefesa();
+        boolean esquivaAbsoluta = Math.random() * 100 < getDefesa();
         int danoFinal = 0;
 
-        if(defesaAbsoluta) {
+        if(esquivaAbsoluta) {
             danoFinal = 0;
         } else {
             danoFinal = Math.max(danoOriginal - getDefesa(), 0); // Reduz o dano com base na defesa
@@ -92,25 +93,29 @@ public class Arqueiro extends Personagem{
                 + "Dano após defender: " + danoFinal + "\n"
                 + "Vida restante: " + getPontosVida());
 
-        return new ResultadoDefesa(danoFinal, defesaAbsoluta, super.getPontosVida());
+        return new ResultadoDefesa(danoFinal, esquivaAbsoluta, super.getPontosVida());
     }
 
     @Override
     public boolean fugir(Personagem alvo){
-        mensagemSleep mensagem = new mensagemSleep();
-        System.out.println("Você deseja fugir da batalha?");
-        System.out.println("(1) - Sim " + "\n(2) - Não");
-        int escolhaFugir = scanner.nextInt();
+        mensagemSleep mensagemSleep = new mensagemSleep();
 
-        if(escolhaFugir == 1 ){
-            System.out.println("Você escolheu fugir da batalha, você perdeu honra!");
-            mensagem.mensagemSleep("Fugindo...");
+        int escolhaFugir = JOptionPane.showConfirmDialog(
+                null,
+                "Você deseja fugir da batalha?",
+                "Fuga",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if(escolhaFugir == JOptionPane.YES_NO_OPTION){
+            mensagemSleep.mensagemSleep("Fugindo!");
+            System.out.println("Você escolheu fugir da batalha você perdeu honra!");
             return true;
-        }else if(escolhaFugir == 2){
-            System.out.println("Vamos continuar a batalha.");
+        } else {
+            System.out.println("Você decidiu continuar lutando!");
             return false;
         }
-        return false;
     }
 
 }

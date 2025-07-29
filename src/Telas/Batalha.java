@@ -10,12 +10,14 @@ import Combate.ResultadoDefesa;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
 import Personagens.*;
+import Util.MensagemBatalha;
 
 public class Batalha {
     private JTextPane textPaneTituloBatalha;
     private JButton buttonComecarBatalha;
     private JButton botaoAtacar;
     private JButton botaoDefender;
+    private JButton botaoFugir;
     private JFrame tela;
     private Personagem personagem;
     private Personagem inimigo;
@@ -86,6 +88,7 @@ public class Batalha {
            MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha, tela);
         });
 
+        // Botão defender
         botaoDefender = new JButton("Defender");
         Estilos.estilizarBotao(botaoDefender);
         botaoDefender.addActionListener(e -> {
@@ -104,6 +107,18 @@ public class Batalha {
             JOptionPane.showMessageDialog(tela, mensagem);
         });
 
+        // Botão Fugir
+        botaoFugir = new JButton("Fugir");
+        Estilos.estilizarBotao(botaoFugir);
+        botaoFugir.addActionListener(e -> {
+            boolean fugiu = personagem.fugir(inimigo);
+            MensagemBatalha.mostrarFulga(tela, personagem, fugiu);
+
+            if(fugiu){
+                tela.dispose();
+            }
+        });
+
         JPanel painelBotoeA = new JPanel(new GridBagLayout());
         GridBagConstraints botoesAcoes = new GridBagConstraints();
         botoesAcoes.insets = new Insets(10,10,10,10);
@@ -113,6 +128,8 @@ public class Batalha {
         painelBotoeA.add(botaoAtacar, botoesAcoes);
         botoesAcoes.gridy++;
         painelBotoeA.add(botaoDefender, botoesAcoes);
+        botoesAcoes.gridy++;
+        painelBotoeA.add(botaoFugir, botoesAcoes);
         botoesAcoes.gridy++;
         tela.add(painelBotoeA, BorderLayout.CENTER);
 

@@ -9,16 +9,17 @@ import java.util.ArrayList;
 
 public class CampoBatalha {
     private Arqueiro arqueiro;
+    private Mago mago;
     private Inimigos goblin;
     private int turno;
     private boolean batalhaAtiva;
 
     public Personagem getHeroi() {
-        return arqueiro;
+        return mago;
     }
 
-    public void setHeroi(Arqueiro arqueiro) {
-        this.arqueiro = arqueiro;
+    public void setHeroi(Mago mago) {
+        this.mago = mago;
     }
 
     public Inimigos getInimigo() {
@@ -47,6 +48,7 @@ public class CampoBatalha {
 
     public void iniciarPersonagem(){
         this.arqueiro = new Arqueiro("Arc");
+        this.mago = new Mago("Albert");
 
         ArrayList<Habilidade> habilidadesGoblin = new ArrayList<>();
         habilidadesGoblin.add(new Habilidade("Estocada Precisa", TipoHabilidade.FISICO, 13));

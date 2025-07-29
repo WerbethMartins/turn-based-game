@@ -18,9 +18,6 @@ public class CriadorPersonagem {
                "Mago"
         ));
 
-        System.out.print("Digite o nome do seu personagem: ");
-        String nome = scanner.next();
-
         try {
             while(true){
                 for (int i = 0; i < personagens.size(); i++) {
