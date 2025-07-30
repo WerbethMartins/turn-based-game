@@ -8,6 +8,7 @@ import Personagens.*;
 import java.util.ArrayList;
 
 public class CampoBatalha {
+    private Personagem personagemSelecionado;
     private Arqueiro arqueiro;
     private Mago mago;
     private Inimigos goblin;
@@ -15,11 +16,11 @@ public class CampoBatalha {
     private boolean batalhaAtiva;
 
     public Personagem getHeroi() {
-        return mago;
+        return personagemSelecionado;
     }
 
-    public void setHeroi(Mago mago) {
-        this.mago = mago;
+    public void setHeroi(Personagem personagemSelecionado) {
+        this.personagemSelecionado = personagemSelecionado;
     }
 
     public Inimigos getInimigo() {
@@ -46,9 +47,8 @@ public class CampoBatalha {
         this.turno = turno;
     }
 
-    public void iniciarPersonagem(){
-        this.arqueiro = new Arqueiro("Arc");
-        this.mago = new Mago("Albert");
+    public void iniciarPersonagem(Personagem personagemSelecionado){
+        this.personagemSelecionado = personagemSelecionado;
 
         ArrayList<Habilidade> habilidadesGoblin = new ArrayList<>();
         habilidadesGoblin.add(new Habilidade("Estocada Precisa", TipoHabilidade.FISICO, 13));
@@ -72,27 +72,26 @@ public class CampoBatalha {
         }
     }
 
-
     public CampoBatalha() {
         this.turno = 1;
         this.batalhaAtiva = true;
-        iniciarPersonagem();
+        iniciarPersonagem(personagemSelecionado);
     }
 
     public String atacarComHabilidade(int indice){
-        if(indice < 0 || indice >= arqueiro.getHabilidades().size()){
+        if(indice < 0 || indice >= personagemSelecionado.getHabilidades().size()){
             return "Escolha inválida.";
         }
 
-        Habilidade habilidade = arqueiro.getHabilidades().get(indice);
-        arqueiro.atacar(goblin, habilidade);
+        Habilidade habilidade = personagemSelecionado.getHabilidades().get(indice);
+        personagemSelecionado.atacar(goblin, habilidade);
 
         if(!goblin.estaVivo()){
             batalhaAtiva = false;
-            return "\uD83C\uDFF9 " + goblin.getNome() + " foi derrotado!";
+            return "\uD83C\uDFF9 " + goblin.getNome() + " foi derrotado! Você ganho " + personagemSelecionado.getPontosXp();
         }
 
-        if(!arqueiro.estaVivo()){
+        if(!personagemSelecionado.estaVivo()){
             batalhaAtiva = false;
             return "☠\uFE0F Você foi derrotado.";
         }
@@ -102,18 +101,18 @@ public class CampoBatalha {
 
     public String defender(Personagem inimigo, Habilidade habilidade){
         Habilidade habilidadeGoblin = goblin.getHabilidades().get(0);
-        arqueiro.defender(goblin, habilidadeGoblin);
+        personagemSelecionado.defender(goblin, habilidadeGoblin);
         return "Você se defendeu.";
     }
 
     public String fugir(){
-        boolean fugiu = arqueiro.fugir(goblin);
+        boolean fugiu = personagemSelecionado.fugir(goblin);
         batalhaAtiva = !fugiu;
         return fugiu ? " ⚠\uFE0F Você fugiu da batalha com sucesso." : "Falha ao fugir da batalha.";
     }
 
     public ResultadoTurnoInimigo turnoDoInimigo(){
-        if (goblin == null || arqueiro == null) {
+        if (goblin == null || personagemSelecionado == null) {
             System.out.println("[ERRO] Goblin ou Arqueiro está null");
             return new ResultadoTurnoInimigo(null, null);
         }
@@ -125,7 +124,7 @@ public class CampoBatalha {
             return new ResultadoTurnoInimigo(null, null);
         }
 
-        ResultadoAtaque resultado = goblin.atacar(arqueiro, habilidade);
+        ResultadoAtaque resultado = goblin.atacar(personagemSelecionado, habilidade);
 
         if (resultado == null) {
             System.out.println("[ERRO] Resultado do ataque veio null");
@@ -134,8 +133,8 @@ public class CampoBatalha {
         return new ResultadoTurnoInimigo(resultado, habilidade);
     }
 
-    public ArrayList<Habilidade> getHabilidadesArqueiro(){
-        return arqueiro.getHabilidades();
+    public ArrayList<Habilidade> getHabilidadesPersonagem(){
+        return personagemSelecionado.getHabilidades();
     }
 
     public boolean estaAtiva(){
@@ -145,8 +144,8 @@ public class CampoBatalha {
     }
 
     public String status(){
-        return "Arqueiro: " + arqueiro.getPontosVida() + " HP | Goblin:" + goblin.getPontosVida() + " HP"
-                + "\n" + arqueiro.getMensagemVida();
+        return "Arqueiro: " + personagemSelecionado.getPontosVida() + " HP | Goblin:" + goblin.getPontosVida() + " HP"
+                + "\n" + personagemSelecionado.getMensagemVida();
     }
 
 }

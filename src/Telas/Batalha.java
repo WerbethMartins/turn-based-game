@@ -1,11 +1,8 @@
 package Telas;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import CampoBatalha.CampoBatalha;
-import Combate.ResultadoAtaque;
 import Combate.ResultadoDefesa;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
@@ -19,12 +16,15 @@ public class Batalha {
     private JButton botaoDefender;
     private JButton botaoFugir;
     private JFrame tela;
-    private Personagem personagem;
+    private Personagem personagemSelecionado;
     private Personagem inimigo;
     private CampoBatalha campoBatalha;
 
-    public Batalha(){
+    public Batalha(Personagem personagemSelecionado){
+        this.personagemSelecionado = personagemSelecionado;
         this.campoBatalha = new CampoBatalha();
+        this.campoBatalha.iniciarPersonagem(personagemSelecionado);
+        this.inimigo = campoBatalha.getInimigo();
 
         // Criando a janela de pricipal
         tela = new JFrame();
@@ -61,12 +61,19 @@ public class Batalha {
     }
 
     private void createUIComponents() {
-        personagem = campoBatalha.getHeroi();
+        Personagem heroi = campoBatalha.getHeroi();
         inimigo = campoBatalha.getInimigo();
+
+        if(heroi == null){
+            System.out.println("[ERRO] Nehum heroi foi definido!");
+            return;
+        }
+
+        this.personagemSelecionado = heroi;
 
         textPaneTituloBatalha = new JTextPane();
         Estilos.estilosTextPane(textPaneTituloBatalha);
-        textPaneTituloBatalha.setText("Batalha entre " + personagem.getNome() + " e " + inimigo.getNome());
+        textPaneTituloBatalha.setText("Batalha entre " + personagemSelecionado.getNome() + " e " + inimigo.getNome());
 
         buttonComecarBatalha = new JButton();
         buttonComecarBatalha.setText("Iniciar a batalha");
@@ -78,7 +85,7 @@ public class Batalha {
     }
 
     public void botoeAcoes(){
-        personagem = campoBatalha.getHeroi();
+        personagemSelecionado = campoBatalha.getHeroi();
         inimigo = campoBatalha.getInimigo();
 
         // Botão atacar
@@ -87,7 +94,7 @@ public class Batalha {
         botaoAtacar.addActionListener(e -> {
             try{
                 if(campoBatalha.estaAtiva()){
-                    MenuHabilidades menu = new MenuHabilidades(tela, personagem, inimigo, campoBatalha, tela);
+                    MenuHabilidades menu = new MenuHabilidades(tela, personagemSelecionado, inimigo, campoBatalha, tela);
                 } else {
                     JOptionPane.showMessageDialog(tela, "A batalha não está ativa!");
                 }
@@ -108,12 +115,12 @@ public class Batalha {
                 }
 
                 Habilidade habilidadeInimigo = inimigo.escolherHabilidadeAleatoria();
-                ResultadoDefesa resultado = personagem.defender(inimigo, habilidadeInimigo);
+                ResultadoDefesa resultado = personagemSelecionado.defender(inimigo, habilidadeInimigo);
 
-                String mensagem = personagem.getNome() + " se defendeu do ataque " + habilidadeInimigo.getNome() + "\n"
+                String mensagem = personagemSelecionado.getNome() + " se defendeu do ataque " + habilidadeInimigo.getNome() + "\n"
                         + "\uD83D\uDEE1 Dano recebido: " + resultado.getDanoOriginal() + "\n"
                         + (resultado.isDefesaAbsoluta() ? "✨ Defesa absoluta " : "Defesa parcial\n")
-                        + "❤\uFE0F Vida restante: " + personagem.getPontosVida() + "\n";
+                        + "❤\uFE0F Vida restante: " + personagemSelecionado.getPontosVida() + "\n";
                 JOptionPane.showMessageDialog(tela, mensagem);
             }catch(Exception error){
                 JOptionPane.showMessageDialog(tela, "Não foi possivel defender!");
@@ -125,8 +132,8 @@ public class Batalha {
         botaoFugir = new JButton("Fugir");
         Estilos.estilizarBotao(botaoFugir);
         botaoFugir.addActionListener(e -> {
-            boolean fugiu = personagem.fugir(inimigo);
-            MensagemBatalha.mostrarFulga(tela, personagem, fugiu);
+            boolean fugiu = personagemSelecionado.fugir(inimigo);
+            MensagemBatalha.mostrarFulga(tela, personagemSelecionado, fugiu);
 
             if(fugiu){
                 tela.dispose();
@@ -156,6 +163,6 @@ public class Batalha {
     }
 
     public static void main(String[] args){
-        SwingUtilities.invokeLater(() -> new Batalha());
+        SwingUtilities.invokeLater(EscolherPersonagem::new);
     }
 }

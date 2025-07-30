@@ -14,21 +14,23 @@ public class Guerreiro extends Personagem{
     private int resistencia;
     private boolean modoBerserker;
 
-    public Guerreiro(String nome, int pontosVida, int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades, int forcaBruta, int resistencia, boolean modoBerserker) {
-        super(nome, pontosVida, forca, defesa, velocidade, habilidades);
-        this.forcaBruta = forcaBruta;
-        this.resistencia = resistencia;
-        this.modoBerserker = modoBerserker;
-    }
-
     Scanner scanner = new Scanner(System.in);
 
     public void Guerreiro(){};
 
-    public Guerreiro(int forcaBruta, int resistencia, boolean modoBerserker) {
+    public Guerreiro(String nome) {
+        super(nome, 100, 0,30, 20, 10, new ArrayList<>());
         this.forcaBruta = forcaBruta;
         this.resistencia = resistencia;
         this.modoBerserker = modoBerserker;
+
+        adicionarHabilidade(new Habilidade("Força Colossal", TipoHabilidade.FISICO, 18));
+        adicionarHabilidade(new Habilidade("Agarrada Esmagadora", TipoHabilidade.FISICO, 20));
+        adicionarHabilidade(new Habilidade("Sequência de Socos", TipoHabilidade.FISICO, 22));
+    }
+
+    public Guerreiro(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+        super(nome, pontosVida, pontosXp,forca, defesa, velocidade, habilidades);
     }
 
     public int getForcaBruta() {

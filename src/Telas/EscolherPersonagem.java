@@ -1,19 +1,27 @@
 package Telas;
 
+import CampoBatalha.CampoBatalha;
 import Estilos.Estilos;
+import Personagens.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class EscolherPersonagem extends JFrame{
-    private JButton iconeArqueiro;
-    private JButton iconeMago;
-    private JButton iconeGuerreiro;
+
 
     public EscolherPersonagem(){
         super("Escolha o personagem");
 
-        setSize(600, 400);
+        Arqueiro arqueiro = new Arqueiro("Legolas");
+        CampoBatalha campoBatalha = new CampoBatalha();
+        campoBatalha.iniciarPersonagem(arqueiro);
+
+        Mago mago = new Mago("Albert");
+        Guerreiro guerreiro = new Guerreiro("Thorin");
+
+        setSize(800, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -31,33 +39,37 @@ public class EscolherPersonagem extends JFrame{
         painel.add(titulo);
 
         // Arqueiro
-        painel.add(criarCampo("Arqueiro", "/Imagem/6081840.png"));
+        painel.add(criarCampo("Arqueiro", "/Imagem/arqueiro.png", arqueiro));
         // Mago
-        painel.add(criarCampo("Mago", "/Imagem/6081840.png"));
+        painel.add(criarCampo("Mago", "/Imagem/mago.png", mago));
         // Guerreiro
-        painel.add(criarCampo("Guerreiro", "/Imagem/6081840.png"));
+        painel.add(criarCampo("Guerreiro", "/Imagem/guerreiro.png", guerreiro));
 
         add(painel);
         setVisible(true);
     }
 
-    public JPanel criarCampo(String nomePersonagem, String caminhoImagem){
+    public JPanel criarCampo(String nomePersonagem, String caminhoImagem, Personagem personagemSelecionado){
         JPanel painelCampo = new JPanel(new BorderLayout(5,5));
-        painelCampo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
+        painelCampo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
         painelCampo.setOpaque(false);
 
         JLabel label = new JLabel(nomePersonagem, SwingConstants.CENTER);
         label.setFont(new Font("SansSerif", Font.BOLD, 16));
-        label.setHorizontalAlignment(SwingConstants.LEFT);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setPreferredSize(new Dimension(150, 80));
 
-        JButton botao = new JButton(redimensionarImagem(String.valueOf(caminhoImagem), 80, 120));
+        JButton botao = new JButton(redimensionarImagem(String.valueOf(caminhoImagem), 80, 130));
         Estilos.aplicarEfeitoBotaoImagem(botao);
         botao.addActionListener(e -> {
             JOptionPane.showMessageDialog(this,
                     nomePersonagem + " selecionado!",
                     "Personagem escolhido",
                     JOptionPane.INFORMATION_MESSAGE);
+
+            CampoBatalha campoBatalha = new CampoBatalha();
+            campoBatalha.iniciarPersonagem(personagemSelecionado);
+            new Batalha(personagemSelecionado);
 
             dispose();
         });
@@ -73,7 +85,6 @@ public class EscolherPersonagem extends JFrame{
         Image imagemRedimensionada = iconeOriginal.getImage().getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
         return new ImageIcon(imagemRedimensionada);
     }
-
 
     public static void main(String[] args){
         SwingUtilities.invokeLater(EscolherPersonagem::new);

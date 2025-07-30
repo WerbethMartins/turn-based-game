@@ -8,14 +8,16 @@ import java.util.ArrayList;
 public abstract class Personagem {
     private String nome;
     private int pontosVida;
+    private int pontosXp;
     private int forca;
     private int defesa;
     private int velocidade;
     private ArrayList<Habilidade> habilidades = new ArrayList<>();
 
-    public Personagem(String nome, int pontosVida, int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+    public Personagem(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
         this.nome = nome;
         this.pontosVida = pontosVida;
+        this.pontosXp = pontosXp;
         this.forca = forca;
         this.defesa = defesa;
         this.velocidade = velocidade;
@@ -52,6 +54,14 @@ public abstract class Personagem {
 
     public void setPontosVida(int pontosVida) {
         this.pontosVida = pontosVida;
+    }
+
+    public int getPontosXp() {
+        return pontosXp;
+    }
+
+    public void setPontosXp(int pontosXp) {
+        this.pontosXp = pontosXp;
     }
 
     public int getForca() {
@@ -156,11 +166,18 @@ public abstract class Personagem {
         return this.pontosVida > 0;
     }
 
-    // Métodos abstratos
-
     public Habilidade escolherHabilidadeAleatoria(){
         return null;
     }
+
+    public void ganhoXp(Personagem personagemSelececionado, Inimigos inimigos){
+        int xp = personagemSelececionado.getPontosXp();
+        if(!inimigos.estaVivo()){
+            xp += inimigos.getRecompensaXP();
+        }
+    }
+
+    // Métodos abstratos
 
     public abstract ResultadoAtaque atacar(Personagem alvo, Habilidade habilidade);
 
