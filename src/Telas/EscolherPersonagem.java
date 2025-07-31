@@ -10,7 +10,6 @@ import java.awt.*;
 
 public class EscolherPersonagem extends JFrame{
 
-
     public EscolherPersonagem(){
         super("Escolha o personagem");
 
@@ -70,6 +69,8 @@ public class EscolherPersonagem extends JFrame{
             CampoBatalha campoBatalha = new CampoBatalha();
             campoBatalha.iniciarPersonagem(personagemSelecionado);
             new Batalha(personagemSelecionado);
+
+            System.out.println("Você escolheu " + personagemSelecionado.getNome() + " o " + personagemSelecionado);
 
             dispose();
         });

@@ -1,12 +1,17 @@
 package Util;
 
+import Combate.ResultadoAtaque;
+import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
+import Personagens.Inimigos;
 import Personagens.Personagem;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class MensagemBatalha {
+public class MensagemBatalha extends Component {
 
+    // Metodo sem uso...
     public static void MostrarResultadoAtaque(JFrame tela, Personagem atacante, Personagem defensor, Habilidade habilidade, int dano, boolean critico){
         StringBuilder mensagem = new StringBuilder();
 
@@ -23,12 +28,6 @@ public class MensagemBatalha {
 
     }
 
-    public static void mostrarDefesa(JFrame tela, Personagem defensor, int danoBloqueado){
-        String mensagem = "\uD83D\uDEE1\uFE0F " + defensor.getNome() + " defendeu!\n" +
-                " Dano bloqueado: " + danoBloqueado + "\n" + "Vida restante: " + defensor.getPontosVida();
-        JOptionPane.showMessageDialog(tela, mensagem, " Defesa", JOptionPane.INFORMATION_MESSAGE);
-    }
-
     public static void mostrarFulga(JFrame tela, Personagem personagem, boolean fugiu){
         String mensagem;
 
@@ -41,8 +40,18 @@ public class MensagemBatalha {
         JOptionPane.showMessageDialog(tela, mensagem, "Fuga", JOptionPane.WARNING_MESSAGE);
     }
 
-    public  static void mostrarVitoria(JFrame tela, Personagem vencedor, int xpGanho){
-        String mensagem = "\uD83C\uDFC6 " + vencedor.getNome() + " venceu a batalha!\n" + "XP ganho " + xpGanho;
+    public static void defender(JFrame tela,ResultadoDefesa resultado, Personagem defensor,Habilidade habilidadeUsada){
+        String mensagem = defensor.getNome() + " se defendeu do " + habilidadeUsada.getNome() + "\n"
+                + "\uD83D\uDEE1 Dano recebido: " + resultado.getDanoOriginal() + "\n"
+                + (resultado.isDefesaAbsoluta() ? "✨ Defesa absoluta " : "Defesa parcial\n")
+                + "❤\uFE0F Vida restante: " + defensor.getPontosVida() + "\n";
+        JOptionPane.showMessageDialog(tela, mensagem);
+    }
+
+    public static void mostrarVitoria(JFrame tela, Personagem vencedor, Inimigos inimigo, int xpGanho){
+        String mensagem = "\uD83C\uDFC6 " + vencedor.getNome() + " venceu a batalha!\n"
+                + inimigo.getNome() + " foi derrotado!\n"
+                +"XP ganho " + xpGanho;
         JOptionPane.showMessageDialog(tela, mensagem, "Vitória", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -50,6 +59,5 @@ public class MensagemBatalha {
         String mensagem = "\uD83D\uDC80 " + derrotado.getNome() + " foi derrotado!\n Fim de jogo";
         JOptionPane.showMessageDialog(tela, mensagem, " Derrota", JOptionPane.ERROR_MESSAGE);
     }
-
 
 }

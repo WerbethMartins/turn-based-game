@@ -1,6 +1,7 @@
 package CampoBatalha;
 
 import Combate.ResultadoAtaque;
+import Combate.ResultadoAtaqueInimigo;
 import Combate.ResultadoTurnoInimigo;
 import Habilidade.Habilidade;
 import Personagens.*;
@@ -130,7 +131,7 @@ public class CampoBatalha {
             System.out.println("[ERRO] Resultado do ataque veio null");
         }
 
-        return new ResultadoTurnoInimigo(resultado, habilidade);
+        return new ResultadoTurnoInimigo(resultado,habilidade);
     }
 
     public ArrayList<Habilidade> getHabilidadesPersonagem(){

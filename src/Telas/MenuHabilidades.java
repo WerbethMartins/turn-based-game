@@ -2,9 +2,11 @@ package Telas;
 
 import CampoBatalha.CampoBatalha;
 import Combate.ResultadoAtaque;
+import Combate.ResultadoAtaqueInimigo;
 import Combate.ResultadoTurnoInimigo;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
+import Personagens.Inimigos;
 import Personagens.Personagem;
 import Util.MensagemBatalha;
 
@@ -83,7 +85,8 @@ public class MenuHabilidades extends  JDialog{
                     exibirResultadoAtaque(resultado, habilidade);
 
                     if(inimigo.getPontosVida() <= 0){
-                        JOptionPane.showMessageDialog(tela, inimigo.getNome() + " Foi derrotado!");
+                        personagemSelecionado.ganharXp(personagemSelecionado, (Inimigos) inimigo);
+                        MensagemBatalha.mostrarVitoria(tela, personagemSelecionado, (Inimigos) inimigo,personagemSelecionado.getPontosXp());
                         tela.dispose();
                         telaPrincipal.dispose();
                         return;
@@ -94,7 +97,7 @@ public class MenuHabilidades extends  JDialog{
                     exibirAtaqueInimigo(turnoInimigo.getResultado(), turnoInimigo.getHabilidadeUsada());
 
                     if(personagemSelecionado.getPontosVida() <= 0){
-                        JOptionPane.showMessageDialog(tela, personagemSelecionado.getNome() + " Foi derrotado!");
+                        MensagemBatalha.mostrarDerrota(tela, personagemSelecionado);
                         tela.dispose();
                         telaPrincipal.dispose();
                         return;
@@ -116,8 +119,9 @@ public class MenuHabilidades extends  JDialog{
                     ResultadoAtaque resultado = personagemSelecionado.atacar(inimigo, habilidade);
                     exibirResultadoAtaque(resultado, habilidade);
 
-                    if (inimigo.getPontosVida() <= 0) {
-                        MensagemBatalha.mostrarDerrota(tela, inimigo);
+                    if(inimigo.getPontosVida() <= 0){
+                        personagemSelecionado.ganharXp(personagemSelecionado, (Inimigos) inimigo);
+                        MensagemBatalha.mostrarVitoria(tela, personagemSelecionado, (Inimigos) inimigo,personagemSelecionado.getPontosXp());
                         tela.dispose();
                         telaPrincipal.dispose();
                         return;
@@ -150,13 +154,13 @@ public class MenuHabilidades extends  JDialog{
                    ResultadoAtaque resultado = personagemSelecionado.atacar(inimigo, habilidade);
                    exibirResultadoAtaque(resultado, habilidade);
 
-                   if(inimigo.getPontosVida() <= 0){
-                       campoBatalha.getHeroi().estaVivo();
-                       MensagemBatalha.mostrarDerrota(tela, inimigo);
-                       tela.dispose();
-                       telaPrincipal.dispose();
-                       return;
-                   }
+                    if(inimigo.getPontosVida() <= 0){
+                        personagemSelecionado.ganharXp(personagemSelecionado, (Inimigos) inimigo);
+                        MensagemBatalha.mostrarVitoria(tela,personagemSelecionado, (Inimigos) inimigo, personagemSelecionado.getPontosXp());
+                        tela.dispose();
+                        telaPrincipal.dispose();
+                        return;
+                    }
 
                    // Turno do inimigo
                    ResultadoTurnoInimigo turnoInimigo = campoBatalha.turnoDoInimigo();
@@ -164,7 +168,7 @@ public class MenuHabilidades extends  JDialog{
 
                    if(personagemSelecionado.getPontosVida() <= 0){
                        campoBatalha.getHeroi().estaVivo();
-                       JOptionPane.showMessageDialog(tela, "Você foi derrotado!");
+                       MensagemBatalha.mostrarDerrota(tela, personagemSelecionado);
                        tela.dispose();
                        telaPrincipal.dispose();
                        return;

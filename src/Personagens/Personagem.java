@@ -170,10 +170,14 @@ public abstract class Personagem {
         return null;
     }
 
-    public void ganhoXp(Personagem personagemSelececionado, Inimigos inimigos){
-        int xp = personagemSelececionado.getPontosXp();
-        if(!inimigos.estaVivo()){
-            xp += inimigos.getRecompensaXP();
+    public void ganharXp(Personagem personagemSelececionado, Inimigos inimigo){
+        if(!inimigo.estaVivo()){
+            int xpAtual = personagemSelececionado.getPontosXp();
+            int xpGanho = inimigo.getRecompensaXP();
+            personagemSelececionado.setPontosXp(xpAtual + xpGanho);
+
+            System.out.println("Você ganho " + xpGanho + " após derrotar " + inimigo.getNome() + "!"
+                    + "Xp total: " + personagemSelececionado.getPontosXp());
         }
     }
 

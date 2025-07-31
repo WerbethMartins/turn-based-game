@@ -1,5 +1,7 @@
 package Combate;
 
+import Habilidade.Habilidade;
+
 public class ResultadoAtaque {
     private int danoCausado;
     private boolean critico;

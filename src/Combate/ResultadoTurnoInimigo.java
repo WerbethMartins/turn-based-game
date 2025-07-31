@@ -1,7 +1,6 @@
 package Combate;
 
 import Habilidade.Habilidade;
-import Personagens.Inimigos;
 
 public class ResultadoTurnoInimigo {
     private ResultadoAtaque resultado;

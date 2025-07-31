@@ -2,18 +2,17 @@ package Personagens;
 
 import Combate.ResultadoAtaque;
 import Combate.ResultadoDefesa;
+import Combate.ResultadoTurnoInimigo;
 import Habilidade.Habilidade;
 import Util.mensagemSleep;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inimigos extends Personagem{
     private TipoPersonagem tipo;
     private int recompensaXP;
-    private boolean isChefe = false;
+    private boolean isChefe;
     private int habilidadeEspecial;
 
     mensagemSleep mensagem = new mensagemSleep();

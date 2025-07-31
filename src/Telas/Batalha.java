@@ -116,12 +116,7 @@ public class Batalha {
 
                 Habilidade habilidadeInimigo = inimigo.escolherHabilidadeAleatoria();
                 ResultadoDefesa resultado = personagemSelecionado.defender(inimigo, habilidadeInimigo);
-
-                String mensagem = personagemSelecionado.getNome() + " se defendeu do ataque " + habilidadeInimigo.getNome() + "\n"
-                        + "\uD83D\uDEE1 Dano recebido: " + resultado.getDanoOriginal() + "\n"
-                        + (resultado.isDefesaAbsoluta() ? "✨ Defesa absoluta " : "Defesa parcial\n")
-                        + "❤\uFE0F Vida restante: " + personagemSelecionado.getPontosVida() + "\n";
-                JOptionPane.showMessageDialog(tela, mensagem);
+                MensagemBatalha.defender(tela,resultado, personagemSelecionado,habilidadeInimigo);
             }catch(Exception error){
                 JOptionPane.showMessageDialog(tela, "Não foi possivel defender!");
                 error.printStackTrace();
