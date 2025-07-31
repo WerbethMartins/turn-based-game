@@ -19,7 +19,7 @@ public class Arqueiro extends Personagem{
 
     public Arqueiro(String nome) {
         // Define os atributos herdados com valores fixos do Arqueiro
-        super(nome, 80, 0,15, 5, 25, new ArrayList<>());
+        super(nome, 80, 0,1,15, 5, 25, new ArrayList<>());
         // Define os atributos próprios
         this.destreza = 14;
         this.furtividade = 16;
@@ -30,8 +30,8 @@ public class Arqueiro extends Personagem{
         adicionarHabilidade(new Habilidade("Flecha tripla", TipoHabilidade.DISTANCIA, 17));
     }
 
-    public Arqueiro(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
-        super(nome, pontosVida, pontosXp,forca, defesa, velocidade, habilidades);
+    public Arqueiro(String nome, int pontosVida, int pontosXp,int nivel,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+        super(nome, pontosVida, pontosXp,nivel,forca, defesa, velocidade, habilidades);
     }
 
     public int getDestreza() {

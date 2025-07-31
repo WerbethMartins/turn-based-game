@@ -1,7 +1,6 @@
 package CampoBatalha;
 
 import Combate.ResultadoAtaque;
-import Combate.ResultadoAtaqueInimigo;
 import Combate.ResultadoTurnoInimigo;
 import Habilidade.Habilidade;
 import Personagens.*;
@@ -63,7 +62,7 @@ public class CampoBatalha {
                 15,
                 habilidadesGoblin,
                 TipoPersonagem.GOBLIN,
-                20,
+                50,
                 Math.random() < 0.5,
                 12);
 

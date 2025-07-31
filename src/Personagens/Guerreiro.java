@@ -19,7 +19,7 @@ public class Guerreiro extends Personagem{
     public void Guerreiro(){};
 
     public Guerreiro(String nome) {
-        super(nome, 100, 0,30, 20, 10, new ArrayList<>());
+        super(nome, 100, 0,1,30, 20, 10, new ArrayList<>());
         this.forcaBruta = forcaBruta;
         this.resistencia = resistencia;
         this.modoBerserker = modoBerserker;
@@ -29,8 +29,8 @@ public class Guerreiro extends Personagem{
         adicionarHabilidade(new Habilidade("Sequência de Socos", TipoHabilidade.FISICO, 22));
     }
 
-    public Guerreiro(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
-        super(nome, pontosVida, pontosXp,forca, defesa, velocidade, habilidades);
+    public Guerreiro(String nome, int pontosVida, int pontosXp,int nivel,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+        super(nome, pontosVida, pontosXp,nivel,forca, defesa, velocidade, habilidades);
     }
 
     public int getForcaBruta() {

@@ -21,7 +21,7 @@ public class Mago extends Personagem{
 
     public Mago(String nome) {
         // Define os valores herdados com valores fixo do mago.
-        super(nome, 80, 0,8, 10, 15, new ArrayList<>());
+        super(nome, 80, 0,1,8, 10, 15, new ArrayList<>());
         this.mana = 80;
         this.poderMagico = 30;
         this.sabedoria = false;
@@ -31,8 +31,8 @@ public class Mago extends Personagem{
         adicionarHabilidade(new Habilidade("Fogo do Inferno", TipoHabilidade.MAGIA, 18));
     }
 
-    public Mago(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
-        super(nome, pontosVida, pontosXp,forca, defesa, velocidade, habilidades);
+    public Mago(String nome, int pontosVida, int pontosXp,int nivel,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+        super(nome, pontosVida, pontosXp, nivel, forca, defesa, velocidade, habilidades);
     }
 
     public int getMana() {

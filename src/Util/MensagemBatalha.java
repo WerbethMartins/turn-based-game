@@ -48,10 +48,12 @@ public class MensagemBatalha extends Component {
         JOptionPane.showMessageDialog(tela, mensagem);
     }
 
-    public static void mostrarVitoria(JFrame tela, Personagem vencedor, Inimigos inimigo, int xpGanho){
+    public static void mostrarVitoria(JFrame tela, Personagem vencedor, Inimigos inimigo, int xpGanho, int nivel){
+
         String mensagem = "\uD83C\uDFC6 " + vencedor.getNome() + " venceu a batalha!\n"
                 + inimigo.getNome() + " foi derrotado!\n"
-                +"XP ganho " + xpGanho;
+                + "XP ganho " + xpGanho + "\n"
+                + "Nivel: " + nivel;
         JOptionPane.showMessageDialog(tela, mensagem, "Vitória", JOptionPane.INFORMATION_MESSAGE);
     }
 

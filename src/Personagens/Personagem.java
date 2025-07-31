@@ -3,21 +3,25 @@ package Personagens;
 import Combate.ResultadoAtaque;
 import Combate.ResultadoDefesa;
 import Habilidade.Habilidade;
+
+import javax.swing.*;
 import java.util.ArrayList;
 
 public abstract class Personagem {
     private String nome;
     private int pontosVida;
     private int pontosXp;
+    private int nivel;
     private int forca;
     private int defesa;
     private int velocidade;
     private ArrayList<Habilidade> habilidades = new ArrayList<>();
 
-    public Personagem(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+    public Personagem(String nome, int pontosVida, int pontosXp, int nivel,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
         this.nome = nome;
         this.pontosVida = pontosVida;
         this.pontosXp = pontosXp;
+        this.nivel = nivel;
         this.forca = forca;
         this.defesa = defesa;
         this.velocidade = velocidade;
@@ -62,6 +66,14 @@ public abstract class Personagem {
 
     public void setPontosXp(int pontosXp) {
         this.pontosXp = pontosXp;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
     }
 
     public int getForca() {
@@ -176,8 +188,24 @@ public abstract class Personagem {
             int xpGanho = inimigo.getRecompensaXP();
             personagemSelececionado.setPontosXp(xpAtual + xpGanho);
 
-            System.out.println("Você ganho " + xpGanho + " após derrotar " + inimigo.getNome() + "!"
+            System.out.println("Você ganhou " + xpGanho + " após derrotar " + inimigo.getNome() + "!"
                     + "Xp total: " + personagemSelececionado.getPontosXp());
+        }
+    }
+
+    public void subirNivel(Personagem personagemSelecionado){
+        int xp = personagemSelecionado.getPontosXp();
+        if(xp > 100){
+            int nivelAtual = personagemSelecionado.getNivel();
+            int nivelNovo = (nivelAtual + 1);
+
+            personagemSelecionado.setNivel(nivelNovo);
+
+            JOptionPane.showMessageDialog(null, "Parabêns, você subiu de nivel!");
+
+            System.out.println("Seu nivel aumentou!\n"
+                    + "Nivel: " + nivelNovo + "\n"
+                    + "Xp: " + getPontosXp());
         }
     }
 

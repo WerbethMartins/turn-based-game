@@ -2,7 +2,6 @@ package Telas;
 
 import CampoBatalha.CampoBatalha;
 import Combate.ResultadoAtaque;
-import Combate.ResultadoAtaqueInimigo;
 import Combate.ResultadoTurnoInimigo;
 import Estilos.Estilos;
 import Habilidade.Habilidade;
@@ -86,7 +85,10 @@ public class MenuHabilidades extends  JDialog{
 
                     if(inimigo.getPontosVida() <= 0){
                         personagemSelecionado.ganharXp(personagemSelecionado, (Inimigos) inimigo);
-                        MensagemBatalha.mostrarVitoria(tela, personagemSelecionado, (Inimigos) inimigo,personagemSelecionado.getPontosXp());
+                        personagemSelecionado.subirNivel(personagemSelecionado);
+                        MensagemBatalha.mostrarVitoria(tela, personagemSelecionado, (Inimigos) inimigo,
+                                personagemSelecionado.getPontosXp(), personagemSelecionado.getNivel());
+
                         tela.dispose();
                         telaPrincipal.dispose();
                         return;
@@ -121,7 +123,9 @@ public class MenuHabilidades extends  JDialog{
 
                     if(inimigo.getPontosVida() <= 0){
                         personagemSelecionado.ganharXp(personagemSelecionado, (Inimigos) inimigo);
-                        MensagemBatalha.mostrarVitoria(tela, personagemSelecionado, (Inimigos) inimigo,personagemSelecionado.getPontosXp());
+                        personagemSelecionado.subirNivel(personagemSelecionado);
+                        MensagemBatalha.mostrarVitoria(tela, personagemSelecionado, (Inimigos) inimigo,
+                                personagemSelecionado.getPontosXp(), personagemSelecionado.getNivel());
                         tela.dispose();
                         telaPrincipal.dispose();
                         return;
@@ -156,7 +160,10 @@ public class MenuHabilidades extends  JDialog{
 
                     if(inimigo.getPontosVida() <= 0){
                         personagemSelecionado.ganharXp(personagemSelecionado, (Inimigos) inimigo);
-                        MensagemBatalha.mostrarVitoria(tela,personagemSelecionado, (Inimigos) inimigo, personagemSelecionado.getPontosXp());
+                        personagemSelecionado.subirNivel(personagemSelecionado);
+                        MensagemBatalha.mostrarVitoria(tela,personagemSelecionado, (Inimigos) inimigo,
+                                personagemSelecionado.getPontosXp(), personagemSelecionado.getNivel());
+
                         tela.dispose();
                         telaPrincipal.dispose();
                         return;

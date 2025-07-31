@@ -23,15 +23,15 @@ public class Inimigos extends Personagem{
 
     public Inimigos(String nome, int pontosVida,int forca, int defesa, int velocidade,
                     ArrayList<Habilidade> habilidades, TipoPersonagem tipo, int recompensaXP, boolean isChefe, int habilidadeEspecial) {
-        super(nome, pontosVida,0,forca, defesa, velocidade, habilidades);
+        super(nome, pontosVida,0,1,forca, defesa, velocidade, habilidades);
         this.tipo = tipo;
         this.recompensaXP = recompensaXP;
         this.isChefe = isChefe;
         this.habilidadeEspecial = habilidadeEspecial;
     }
 
-    public Inimigos(String nome, int pontosVida, int pontosXp,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
-        super(nome, pontosVida, pontosXp,forca, defesa, velocidade, habilidades);
+    public Inimigos(String nome, int pontosVida, int pontosXp, int nivel,int forca, int defesa, int velocidade, ArrayList<Habilidade> habilidades) {
+        super(nome, pontosVida, pontosXp, nivel,forca, defesa, velocidade, habilidades);
     }
 
     public TipoPersonagem getTipo() {
