@@ -195,16 +195,20 @@ public abstract class Personagem {
 
     public void subirNivel(Personagem personagemSelecionado){
         int xp = personagemSelecionado.getPontosXp();
-        if(xp > 100){
-            int nivelAtual = personagemSelecionado.getNivel();
-            int nivelNovo = (nivelAtual + 1);
+        int xpNecessario = 60;
+        if(xp > xpNecessario){
+            this.nivel++;
 
-            personagemSelecionado.setNivel(nivelNovo);
+            pontosXp -= xpNecessario;
+            xpNecessario *= 2;
 
-            JOptionPane.showMessageDialog(null, "Parabêns, você subiu de nivel!");
+            personagemSelecionado.setNivel(this.nivel);
+
+            JOptionPane.showMessageDialog(null, "Parabêns, você subiu de nivel!\n"
+                    + "Xp necessário para o próximo nível: " + xpNecessario);
 
             System.out.println("Seu nivel aumentou!\n"
-                    + "Nivel: " + nivelNovo + "\n"
+                    + "Nivel: " + personagemSelecionado.getNivel() + "\n"
                     + "Xp: " + getPontosXp());
         }
     }

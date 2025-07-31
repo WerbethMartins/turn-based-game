@@ -62,7 +62,7 @@ public class CampoBatalha {
                 15,
                 habilidadesGoblin,
                 TipoPersonagem.GOBLIN,
-                50,
+                80,
                 Math.random() < 0.5,
                 12);
 
